@@ -9,55 +9,55 @@ import FeaturedSection from "@/components/FeaturedSection";
 import ArticlesSlider from "@/components/ArticlesSlider";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-
 const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [page, setPage] = useState(1);
-
   useEffect(() => {
     const categoryParam = searchParams.get('category');
     if (categoryParam) {
       setSelectedCategory(Number(categoryParam));
     }
   }, [searchParams]);
-
-  const { data: featuredPosts = [] } = useQuery<WordPressPost[]>({
+  const {
+    data: featuredPosts = []
+  } = useQuery<WordPressPost[]>({
     queryKey: ['featured-posts'],
-    queryFn: () => fetchPosts(1, 5),
+    queryFn: () => fetchPosts(1, 5)
   });
-
-  const { data: posts = [], isLoading: postsLoading } = useQuery<WordPressPost[]>({
+  const {
+    data: posts = [],
+    isLoading: postsLoading
+  } = useQuery<WordPressPost[]>({
     queryKey: ['posts', page, selectedCategory],
-    queryFn: () => fetchPosts(page, 12, selectedCategory || undefined),
+    queryFn: () => fetchPosts(page, 12, selectedCategory || undefined)
   });
-
-  const { data: categories = [] } = useQuery<WordPressCategory[]>({
+  const {
+    data: categories = []
+  } = useQuery<WordPressCategory[]>({
     queryKey: ['categories'],
-    queryFn: fetchCategories,
+    queryFn: fetchCategories
   });
-
   const handleCategorySelect = (categoryId: number | null) => {
     setSelectedCategory(categoryId);
     setPage(1);
     if (categoryId) {
-      setSearchParams({ category: categoryId.toString() });
+      setSearchParams({
+        category: categoryId.toString()
+      });
     } else {
       setSearchParams({});
     }
   };
-
   const handleLoadMore = () => {
     setPage(prev => prev + 1);
   };
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       <Header />
       
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold mb-2">À LA UNE</h2>
+          
           <p className="text-muted-foreground">Dernières actualités et informations</p>
         </div>
 
@@ -65,50 +65,28 @@ const Home = () => {
 
         <FeaturedSection posts={featuredPosts} />
 
-        <CategoryFilter
-          categories={categories}
-          selectedCategory={selectedCategory}
-          onCategorySelect={handleCategorySelect}
-        />
+        <CategoryFilter categories={categories} selectedCategory={selectedCategory} onCategorySelect={handleCategorySelect} />
 
-        {postsLoading && page === 1 ? (
-          <div className="flex items-center justify-center py-20">
+        {postsLoading && page === 1 ? <div className="flex items-center justify-center py-20">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          </div>
-        ) : (
-          <>
+          </div> : <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              {posts.map((post) => (
-                <ArticleCard key={post.id} post={post} />
-              ))}
+              {posts.map(post => <ArticleCard key={post.id} post={post} />)}
             </div>
 
-            {posts.length > 0 && posts.length % 12 === 0 && (
-              <div className="flex justify-center">
-                <Button 
-                  onClick={handleLoadMore}
-                  size="lg"
-                  disabled={postsLoading}
-                >
-                  {postsLoading ? (
-                    <>
+            {posts.length > 0 && posts.length % 12 === 0 && <div className="flex justify-center">
+                <Button onClick={handleLoadMore} size="lg" disabled={postsLoading}>
+                  {postsLoading ? <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Chargement...
-                    </>
-                  ) : (
-                    'Charger plus d\'articles'
-                  )}
+                    </> : 'Charger plus d\'articles'}
                 </Button>
-              </div>
-            )}
-          </>
-        )}
+              </div>}
+          </>}
 
-        {!postsLoading && posts.length === 0 && (
-          <div className="text-center py-20">
+        {!postsLoading && posts.length === 0 && <div className="text-center py-20">
             <p className="text-muted-foreground text-lg">Aucun article trouvé</p>
-          </div>
-        )}
+          </div>}
       </main>
 
       <footer className="bg-card border-t border-border mt-12 py-8">
@@ -117,8 +95,6 @@ const Home = () => {
           <p className="text-sm mt-2">Radio Communautaire de la Vie Meilleure en Action</p>
         </div>
       </footer>
-    </div>
-  );
+    </div>;
 };
-
 export default Home;
