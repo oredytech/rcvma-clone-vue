@@ -5,6 +5,7 @@ import { fetchPosts, fetchCategories, WordPressPost, WordPressCategory } from "@
 import Header from "@/components/Header";
 import ArticleCard from "@/components/ArticleCard";
 import CategoryFilter from "@/components/CategoryFilter";
+import FeaturedSection from "@/components/FeaturedSection";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
@@ -19,6 +20,11 @@ const Home = () => {
       setSelectedCategory(Number(categoryParam));
     }
   }, [searchParams]);
+
+  const { data: featuredPosts = [] } = useQuery<WordPressPost[]>({
+    queryKey: ['featured-posts'],
+    queryFn: () => fetchPosts(1, 5),
+  });
 
   const { data: posts = [], isLoading: postsLoading } = useQuery<WordPressPost[]>({
     queryKey: ['posts', page, selectedCategory],
@@ -54,7 +60,9 @@ const Home = () => {
           <p className="text-muted-foreground">Dernières actualités et informations</p>
         </div>
 
-        <CategoryFilter 
+        <FeaturedSection posts={featuredPosts} />
+
+        <CategoryFilter
           categories={categories}
           selectedCategory={selectedCategory}
           onCategorySelect={handleCategorySelect}
