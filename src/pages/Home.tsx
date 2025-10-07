@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import ArticleCard from "@/components/ArticleCard";
 import CategoryFilter from "@/components/CategoryFilter";
 import FeaturedSection from "@/components/FeaturedSection";
+import ArticlesSlider from "@/components/ArticlesSlider";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
@@ -59,6 +60,8 @@ const Home = () => {
           <h2 className="text-3xl font-bold mb-2">À LA UNE</h2>
           <p className="text-muted-foreground">Dernières actualités et informations</p>
         </div>
+
+        <ArticlesSlider posts={featuredPosts} />
 
         <FeaturedSection posts={featuredPosts} />
 

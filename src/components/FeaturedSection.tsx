@@ -21,7 +21,7 @@ const FeaturedSection = ({ posts }: FeaturedSectionProps) => {
     <section className="mb-12">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-auto lg:h-[600px]">
         {/* Left side - 4 small articles in 2x2 grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 order-2 lg:order-1">
           {smallPosts.map((post) => {
             const featuredImage = post._embedded?.['wp:featuredmedia']?.[0]?.source_url;
             const category = post._embedded?.['wp:term']?.[0]?.[0];
@@ -77,7 +77,7 @@ const FeaturedSection = ({ posts }: FeaturedSectionProps) => {
         {/* Right side - 1 large featured article */}
         <Link 
           to={`/article/${latestPost.slug}`}
-          className="group relative overflow-hidden rounded-lg h-[290px] sm:h-[600px] block"
+          className="group relative overflow-hidden rounded-lg h-[290px] sm:h-[600px] block order-1 lg:order-2"
         >
           <div className="absolute inset-0">
             {latestPostImage ? (
