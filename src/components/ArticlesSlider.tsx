@@ -7,6 +7,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Link } from "react-router-dom";
+import Autoplay from "embla-carousel-autoplay";
 
 interface ArticlesSliderProps {
   posts: WordPressPost[];
@@ -22,6 +23,12 @@ const ArticlesSlider = ({ posts }: ArticlesSliderProps) => {
           align: "start",
           loop: true,
         }}
+        plugins={[
+          Autoplay({
+            delay: 3000,
+            stopOnInteraction: false,
+          }),
+        ]}
         className="w-full"
       >
         <CarouselContent>
