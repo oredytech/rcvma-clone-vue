@@ -17,7 +17,7 @@ const ArticlesSlider = ({ posts }: ArticlesSliderProps) => {
   if (!posts || posts.length === 0) return null;
 
   return (
-    <div className="mb-8">
+    <div className="mt-[5px] mb-8">
       <Carousel
         opts={{
           align: "start",

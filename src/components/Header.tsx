@@ -102,7 +102,7 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
       {/* Menu mobile en bas */}
       {isMobile && (
         <nav className="fixed bottom-0 left-0 right-0 bg-primary text-primary-foreground border-t border-white/10 z-50 pb-safe">
-          <div className="flex items-center justify-around h-16">
+          <div className="flex items-center justify-around h-[60px]">
             <Link to="/a-propos" className="flex flex-col items-center gap-1 px-4 py-2 hover:bg-white/10 rounded transition-colors">
               <Info className="h-5 w-5" />
               <span className="text-[10px]">À propos</span>
