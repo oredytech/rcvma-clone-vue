@@ -26,11 +26,11 @@ const Home = () => {
     queryFn: () => fetchPosts(1, 5)
   });
   const {
-    data: posts = [],
+    data: allPosts = [],
     isLoading: postsLoading
   } = useQuery<WordPressPost[]>({
-    queryKey: ['posts', page, selectedCategory],
-    queryFn: () => fetchPosts(page, 12, selectedCategory || undefined)
+    queryKey: ['all-posts'],
+    queryFn: () => fetchPosts(1, 100)
   });
   const {
     data: categories = []
@@ -65,26 +65,42 @@ const Home = () => {
 
         <FeaturedSection posts={featuredPosts} />
 
-        {postsLoading && page === 1 ? <div className="flex items-center justify-center py-20">
+        {postsLoading ? (
+          <div className="flex items-center justify-center py-20">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          </div> : <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              {posts.map(post => <ArticleCard key={post.id} post={post} />)}
-            </div>
+          </div>
+        ) : (
+          <div className="space-y-12">
+            {categories.filter(cat => cat.count > 0).map((category) => {
+              const categoryPosts = allPosts.filter(post => 
+                post.categories.includes(category.id)
+              ).slice(0, 8);
 
-            {posts.length > 0 && posts.length % 12 === 0 && <div className="flex justify-center">
-                <Button onClick={handleLoadMore} size="lg" disabled={postsLoading}>
-                  {postsLoading ? <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Chargement...
-                    </> : 'Charger plus d\'articles'}
-                </Button>
-              </div>}
-          </>}
+              if (categoryPosts.length === 0) return null;
 
-        {!postsLoading && posts.length === 0 && <div className="text-center py-20">
-            <p className="text-muted-foreground text-lg">Aucun article trouvé</p>
-          </div>}
+              return (
+                <section key={category.id}>
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                      {category.name}
+                    </h2>
+                    <Button
+                      variant="outline"
+                      onClick={() => handleCategorySelect(category.id)}
+                    >
+                      Voir plus
+                    </Button>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {categoryPosts.map(post => (
+                      <ArticleCard key={post.id} post={post} />
+                    ))}
+                  </div>
+                </section>
+              );
+            })}
+          </div>
+        )}
       </main>
 
       <footer className="bg-card border-t border-border mt-12 py-8">
