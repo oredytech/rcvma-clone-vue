@@ -53,13 +53,9 @@ const Home = () => {
     setPage(prev => prev + 1);
   };
   return <div className="min-h-screen bg-background">
-      <Header 
-        categories={categories} 
-        selectedCategory={selectedCategory} 
-        onCategorySelect={handleCategorySelect} 
-      />
+      <Header categories={categories} selectedCategory={selectedCategory} onCategorySelect={handleCategorySelect} />
       
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto py-0 px-[7px]">
         <div className="mb-8">
           
           
