@@ -50,7 +50,6 @@ const CategoryItem = ({ category, isSelected, onSelect }: CategoryItemProps) => 
   const { data: posts = [] } = useQuery<WordPressPost[]>({
     queryKey: ['category-preview', category.id],
     queryFn: () => fetchPosts(1, 8, category.id),
-    enabled: false,
   });
 
   return (
