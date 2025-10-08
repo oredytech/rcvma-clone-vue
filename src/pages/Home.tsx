@@ -53,7 +53,11 @@ const Home = () => {
     setPage(prev => prev + 1);
   };
   return <div className="min-h-screen bg-background">
-      <Header />
+      <Header 
+        categories={categories} 
+        selectedCategory={selectedCategory} 
+        onCategorySelect={handleCategorySelect} 
+      />
       
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
@@ -64,8 +68,6 @@ const Home = () => {
         <ArticlesSlider posts={featuredPosts} />
 
         <FeaturedSection posts={featuredPosts} />
-
-        <CategoryFilter categories={categories} selectedCategory={selectedCategory} onCategorySelect={handleCategorySelect} />
 
         {postsLoading && page === 1 ? <div className="flex items-center justify-center py-20">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />

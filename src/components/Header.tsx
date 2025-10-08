@@ -8,8 +8,16 @@ import {
   NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { WordPressCategory } from "@/lib/wordpress";
+import CategoryBar from "@/components/CategoryBar";
 
-const Header = () => {
+interface HeaderProps {
+  categories?: WordPressCategory[];
+  selectedCategory?: number | null;
+  onCategorySelect?: (categoryId: number | null) => void;
+}
+
+const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: HeaderProps) => {
   const isMobile = useIsMobile();
 
   return (
@@ -81,6 +89,15 @@ const Header = () => {
         </div>
       </div>
       </header>
+
+      {/* Barre de catégories */}
+      {categories.length > 0 && onCategorySelect && (
+        <CategoryBar 
+          categories={categories} 
+          selectedCategory={selectedCategory} 
+          onCategorySelect={onCategorySelect} 
+        />
+      )}
 
       {/* Menu mobile en bas */}
       {isMobile && (
