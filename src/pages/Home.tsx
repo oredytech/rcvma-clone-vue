@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchPosts, fetchCategories, WordPressPost, WordPressCategory } from "@/lib/wordpress";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import ArticleCard from "@/components/ArticleCard";
 import CategoryFilter from "@/components/CategoryFilter";
 import FeaturedSection from "@/components/FeaturedSection";
@@ -87,12 +88,7 @@ const Home = () => {
           </div>}
       </main>
 
-      <footer className="bg-card border-t border-border mt-12 py-8">
-        <div className="container mx-auto px-4 text-center text-muted-foreground">
-          <p>&copy; 2025 RCVMA - Tous droits réservés</p>
-          <p className="text-sm mt-2">Radio Communautaire de la Vie Meilleure en Action</p>
-        </div>
-      </footer>
+      <Footer />
     </div>;
 };
 export default Home;
