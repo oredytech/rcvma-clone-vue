@@ -33,6 +33,7 @@ export interface WordPressCategory {
   name: string;
   slug: string;
   count: number;
+  description?: string;
 }
 
 export async function fetchPosts(page = 1, perPage = 12, category?: number): Promise<WordPressPost[]> {

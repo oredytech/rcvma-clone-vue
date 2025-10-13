@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Play, Radio, Search, Info, Mail, Grid } from "lucide-react";
+import { Play, Radio, Search, Info, Mail, Menu, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -102,20 +102,24 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
       {/* Menu mobile en bas */}
       {isMobile && (
         <nav className="fixed bottom-0 left-0 right-0 bg-primary text-primary-foreground border-t border-white/10 z-50 pb-safe">
-          <div className="flex items-center justify-around h-[60px]">
-            <Link to="/a-propos" className="flex flex-col items-center gap-1 px-4 py-2 hover:bg-white/10 rounded transition-colors">
+          <div className="flex items-center justify-around h-[70px]">
+            <Link to="/" className="flex flex-col items-center gap-1 px-3 py-2 hover:bg-white/10 rounded transition-colors">
+              <Home className="h-5 w-5" />
+              <span className="text-[10px]">Accueil</span>
+            </Link>
+            <Link to="/a-propos" className="flex flex-col items-center gap-1 px-3 py-2 hover:bg-white/10 rounded transition-colors">
               <Info className="h-5 w-5" />
               <span className="text-[10px]">À propos</span>
             </Link>
-            <Link to="/contacts" className="flex flex-col items-center gap-1 px-4 py-2 hover:bg-white/10 rounded transition-colors">
+            <Link to="/contacts" className="flex flex-col items-center gap-1 px-3 py-2 hover:bg-white/10 rounded transition-colors">
               <Mail className="h-5 w-5" />
               <span className="text-[10px]">Contacts</span>
             </Link>
-            <Link to="/categories" className="flex flex-col items-center gap-1 px-4 py-2 hover:bg-white/10 rounded transition-colors">
-              <Grid className="h-5 w-5" />
+            <Link to="/categories" className="flex flex-col items-center gap-1 px-3 py-2 hover:bg-white/10 rounded transition-colors">
+              <Menu className="h-5 w-5" />
               <span className="text-[10px]">Catégories</span>
             </Link>
-            <Link to="/rechercher" className="flex flex-col items-center gap-1 px-4 py-2 hover:bg-white/10 rounded transition-colors">
+            <Link to="/rechercher" className="flex flex-col items-center gap-1 px-3 py-2 hover:bg-white/10 rounded transition-colors">
               <Search className="h-5 w-5" />
               <span className="text-[10px]">Rechercher</span>
             </Link>
