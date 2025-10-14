@@ -39,15 +39,15 @@ const DateTimeDisplay = ({ split = false, type }: DateTimeDisplayProps) => {
   }
 
   return (
-    <div className="flex items-center gap-2 text-primary-foreground">
-      <Clock className="h-4 w-4" />
-      <div className="text-sm">
-        <div className="font-semibold">
+    <div className="flex items-center gap-3 text-primary-foreground">
+      <div className="flex items-center gap-2">
+        <Clock className="h-4 w-4" />
+        <div className="text-sm font-semibold">
           {format(currentTime, "HH:mm:ss")}
         </div>
-        <div className="text-xs opacity-90">
-          {format(currentTime, "EEEE d MMMM yyyy", { locale: fr })}
-        </div>
+      </div>
+      <div className="text-xs opacity-90">
+        {format(currentTime, "EEEE d MMMM yyyy", { locale: fr })}
       </div>
     </div>
   );

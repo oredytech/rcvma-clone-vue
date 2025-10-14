@@ -45,7 +45,7 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
         {!isMobile && (
           <div className="border-b border-white/10">
             <div className="container mx-auto px-4">
-              <div className="flex items-center justify-between py-1">
+              <div className="flex items-center justify-end py-1 gap-4">
                 <DateTimeDisplay />
                 <NavigationMenu className="max-w-full">
                   <NavigationMenuList className="gap-1">
@@ -123,7 +123,7 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
       {/* Menu mobile en bas */}
       {isMobile && (
         <>
-          <nav className="fixed bottom-0 left-0 right-0 bg-primary text-primary-foreground z-50 pb-safe rounded-tl-[3px] rounded-tr-[3px] border-t-[3px] border-l-[3px] border-r-[3px] border-white/20">
+          <nav className="fixed bottom-0 left-0 right-0 bg-primary text-primary-foreground z-50 pb-safe rounded-tl-[8px] rounded-tr-[8px]">
             <div className="flex items-center justify-around h-[70px]">
               <Link to="/" className="flex flex-col items-center gap-1 px-3 py-2 hover:bg-white/10 rounded transition-colors">
                 <Home className="h-5 w-5" />
