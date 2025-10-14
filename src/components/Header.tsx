@@ -47,8 +47,8 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
             <div className="container mx-auto px-4">
               <div className="flex items-center justify-end py-1 gap-4">
                 <DateTimeDisplay />
-                <NavigationMenu className="max-w-full">
-                  <NavigationMenuList className="gap-1">
+                <NavigationMenu className="max-w-full ml-auto">
+                  <NavigationMenuList className="gap-1 justify-end">
                     <NavigationMenuItem>
                       <NavigationMenuLink
                         href="/a-propos"
