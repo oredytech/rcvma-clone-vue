@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Play, Radio, Search, Info, Mail, Menu, Home, Users, Calendar, Facebook, Instagram, Twitter, Youtube, Settings, Shield, FileText } from "lucide-react";
+import { Play, Radio, Search, Info, Mail, Menu, Home, Users, Calendar, Facebook, Instagram, Twitter, Youtube, Settings, Shield, FileText, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -28,14 +28,15 @@ interface HeaderProps {
 
 const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: HeaderProps) => {
   const isMobile = useIsMobile();
-  const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+  const [isCategoriesOpen, setIsCategoriesOpen] = useState<string | null>(null);
 
   return (
     <>
       {/* Barre d'heure/date mobile en haut */}
       {isMobile && (
-        <div className="fixed top-0 left-0 right-0 bg-primary text-primary-foreground z-50 h-[40px] flex items-center px-4 border-b border-white/10">
-          <DateTimeDisplay />
+        <div className="fixed top-0 left-0 right-0 bg-primary text-primary-foreground z-50 h-[40px] flex items-center justify-between px-4 border-b border-white/10">
+          <DateTimeDisplay split type="time" />
+          <DateTimeDisplay split type="date" />
         </div>
       )}
 
@@ -44,43 +45,46 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
         {!isMobile && (
           <div className="border-b border-white/10">
             <div className="container mx-auto px-4">
-              <NavigationMenu className="max-w-full justify-end py-1">
-                <NavigationMenuList className="gap-1">
-                  <NavigationMenuItem>
-                    <NavigationMenuLink
-                      href="/a-propos"
-                      className="text-xs px-3 py-1 hover:bg-white/10 rounded transition-colors"
-                    >
-                      À propos
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
-                    <NavigationMenuLink
-                      href="/contacts"
-                      className="text-xs px-3 py-1 hover:bg-white/10 rounded transition-colors"
-                    >
-                      Contacts
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
-                    <NavigationMenuLink
-                      href="/categories"
-                      className="text-xs px-3 py-1 hover:bg-white/10 rounded transition-colors"
-                    >
-                      Catégories
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                  <NavigationMenuItem>
-                    <NavigationMenuLink
-                      href="/rechercher"
-                      className="text-xs px-3 py-1 hover:bg-white/10 rounded transition-colors flex items-center gap-1"
-                    >
-                      <Search className="h-3 w-3" />
-                      Rechercher
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                </NavigationMenuList>
-              </NavigationMenu>
+              <div className="flex items-center justify-between py-1">
+                <DateTimeDisplay />
+                <NavigationMenu className="max-w-full">
+                  <NavigationMenuList className="gap-1">
+                    <NavigationMenuItem>
+                      <NavigationMenuLink
+                        href="/a-propos"
+                        className="text-xs px-3 py-1 hover:bg-white/10 rounded transition-colors"
+                      >
+                        À propos
+                      </NavigationMenuLink>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
+                      <NavigationMenuLink
+                        href="/contacts"
+                        className="text-xs px-3 py-1 hover:bg-white/10 rounded transition-colors"
+                      >
+                        Contacts
+                      </NavigationMenuLink>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
+                      <NavigationMenuLink
+                        href="/categories"
+                        className="text-xs px-3 py-1 hover:bg-white/10 rounded transition-colors"
+                      >
+                        Catégories
+                      </NavigationMenuLink>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
+                      <NavigationMenuLink
+                        href="/rechercher"
+                        className="text-xs px-3 py-1 hover:bg-white/10 rounded transition-colors flex items-center gap-1"
+                      >
+                        <Search className="h-3 w-3" />
+                        Rechercher
+                      </NavigationMenuLink>
+                    </NavigationMenuItem>
+                  </NavigationMenuList>
+                </NavigationMenu>
+              </div>
             </div>
           </div>
         )}
@@ -88,8 +92,6 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
       {/* En-tête principal */}
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-[30px]">
-          {!isMobile && <DateTimeDisplay />}
-          
           <Link to="/" className="flex items-center gap-2">
             <Radio className="h-5 w-5" />
             <div>
@@ -109,8 +111,8 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
       </div>
       </header>
 
-      {/* Barre de catégories */}
-      {categories.length > 0 && onCategorySelect && (
+      {/* Barre de catégories - masquée sur mobile */}
+      {!isMobile && categories.length > 0 && onCategorySelect && (
         <CategoryBar 
           categories={categories} 
           selectedCategory={selectedCategory} 
@@ -121,29 +123,69 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
       {/* Menu mobile en bas */}
       {isMobile && (
         <>
-          <nav className="fixed bottom-0 left-0 right-0 bg-primary text-primary-foreground border-t border-white/10 z-50 pb-safe">
+          <nav className="fixed bottom-0 left-0 right-0 bg-primary text-primary-foreground z-50 pb-safe rounded-tl-[3px] rounded-tr-[3px] border-t-[3px] border-l-[3px] border-r-[3px] border-white/20">
             <div className="flex items-center justify-around h-[70px]">
               <Link to="/" className="flex flex-col items-center gap-1 px-3 py-2 hover:bg-white/10 rounded transition-colors">
                 <Home className="h-5 w-5" />
                 <span className="text-[10px]">Accueil</span>
               </Link>
-              <Link to="/a-propos" className="flex flex-col items-center gap-1 px-3 py-2 hover:bg-white/10 rounded transition-colors">
-                <Info className="h-5 w-5" />
-                <span className="text-[10px]">À propos</span>
-              </Link>
-              <Link to="/contacts" className="flex flex-col items-center gap-1 px-3 py-2 hover:bg-white/10 rounded transition-colors">
-                <Mail className="h-5 w-5" />
-                <span className="text-[10px]">Contacts</span>
-              </Link>
               
-              <Sheet open={isCategoriesOpen} onOpenChange={setIsCategoriesOpen}>
+              <Sheet open={isCategoriesOpen === "about"} onOpenChange={(open) => setIsCategoriesOpen(open ? "about" : null)}>
                 <SheetTrigger asChild>
-                  <button className="flex flex-col items-center gap-1 px-3 py-2 hover:bg-white/10 rounded transition-colors">
-                    <Menu className="h-5 w-5" />
-                    <span className="text-[10px]">Catégories</span>
+                  <button className={`flex flex-col items-center gap-1 px-3 py-2 rounded transition-colors ${isCategoriesOpen === "about" ? "bg-white/20" : "hover:bg-white/10"}`}>
+                    <Info className="h-5 w-5" />
+                    <span className="text-[10px]">À propos</span>
                   </button>
                 </SheetTrigger>
-                <SheetContent side="bottom" className="h-[85vh] overflow-y-auto">
+                <SheetContent side="bottom" className="h-[85vh] overflow-y-auto rounded-tl-[12px] rounded-tr-[12px] border-t border-l border-r border-border">
+                  <SheetHeader>
+                    <SheetTitle>À propos</SheetTitle>
+                  </SheetHeader>
+                  <div className="mt-6">
+                    <p className="text-muted-foreground">
+                      Radio Communautaire de la Vie Meilleure en Action (RCVMA) est une radio communautaire
+                      engagée dans l'information et le développement local.
+                    </p>
+                  </div>
+                </SheetContent>
+              </Sheet>
+
+              <Sheet open={isCategoriesOpen === "contact"} onOpenChange={(open) => setIsCategoriesOpen(open ? "contact" : null)}>
+                <SheetTrigger asChild>
+                  <button className={`flex flex-col items-center gap-1 px-3 py-2 rounded transition-colors ${isCategoriesOpen === "contact" ? "bg-white/20" : "hover:bg-white/10"}`}>
+                    <Mail className="h-5 w-5" />
+                    <span className="text-[10px]">Contacts</span>
+                  </button>
+                </SheetTrigger>
+                <SheetContent side="bottom" className="h-[85vh] overflow-y-auto rounded-tl-[12px] rounded-tr-[12px] border-t border-l border-r border-border">
+                  <SheetHeader>
+                    <SheetTitle>Contacts</SheetTitle>
+                  </SheetHeader>
+                  <div className="mt-6 space-y-4">
+                    <div className="flex items-center gap-3">
+                      <Mail className="h-5 w-5 text-primary" />
+                      <a href="mailto:contact@rcvma.org" className="text-foreground hover:text-primary">
+                        contact@rcvma.org
+                      </a>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Phone className="h-5 w-5 text-primary" />
+                      <a href="tel:+243123456789" className="text-foreground hover:text-primary">
+                        +243 123 456 789
+                      </a>
+                    </div>
+                  </div>
+                </SheetContent>
+              </Sheet>
+              
+              <Sheet open={isCategoriesOpen === "categories"} onOpenChange={(open) => setIsCategoriesOpen(open ? "categories" : null)}>
+                <SheetTrigger asChild>
+                  <button className={`flex flex-col items-center gap-1 px-3 py-2 rounded transition-colors ${isCategoriesOpen === "categories" ? "bg-white/20" : "hover:bg-white/10"}`}>
+                    <Menu className="h-5 w-5" />
+                    <span className="text-[10px]">Menu</span>
+                  </button>
+                </SheetTrigger>
+                <SheetContent side="bottom" className="h-[85vh] overflow-y-auto rounded-tl-[12px] rounded-tr-[12px] border-t border-l border-r border-border">
                   <SheetHeader>
                     <SheetTitle>Menu</SheetTitle>
                   </SheetHeader>
@@ -158,7 +200,7 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
                             key={category.id}
                             to={`/categories?category=${category.id}`}
                             onClick={() => {
-                              setIsCategoriesOpen(false);
+                              setIsCategoriesOpen(null);
                               onCategorySelect?.(category.id);
                             }}
                             className="bg-card border border-border rounded-lg p-3 hover:border-primary transition-all text-sm"
@@ -175,7 +217,7 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
                       <div className="space-y-2">
                         <Link 
                           to="/equipe" 
-                          onClick={() => setIsCategoriesOpen(false)}
+                          onClick={() => setIsCategoriesOpen(null)}
                           className="flex items-center gap-3 p-3 bg-card border border-border rounded-lg hover:border-primary transition-all"
                         >
                           <Users className="h-5 w-5 text-primary" />
@@ -183,7 +225,7 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
                         </Link>
                         <Link 
                           to="/programme" 
-                          onClick={() => setIsCategoriesOpen(false)}
+                          onClick={() => setIsCategoriesOpen(null)}
                           className="flex items-center gap-3 p-3 bg-card border border-border rounded-lg hover:border-primary transition-all"
                         >
                           <Calendar className="h-5 w-5 text-primary" />
@@ -221,7 +263,7 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
                         </button>
                         <Link 
                           to="/confidentialite" 
-                          onClick={() => setIsCategoriesOpen(false)}
+                          onClick={() => setIsCategoriesOpen(null)}
                           className="flex items-center gap-3 p-3 bg-card border border-border rounded-lg hover:border-primary transition-all"
                         >
                           <Shield className="h-5 w-5 text-primary" />
@@ -229,7 +271,7 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
                         </Link>
                         <Link 
                           to="/conditions" 
-                          onClick={() => setIsCategoriesOpen(false)}
+                          onClick={() => setIsCategoriesOpen(null)}
                           className="flex items-center gap-3 p-3 bg-card border border-border rounded-lg hover:border-primary transition-all"
                         >
                           <FileText className="h-5 w-5 text-primary" />

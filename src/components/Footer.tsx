@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="bg-card border-t border-border mt-12">
-      <div className="container mx-auto px-4 py-12">
+    <footer className="bg-slate-900 text-slate-100 border-t border-slate-800 mt-12">
+      <div className="container mx-auto px-4 py-12 pb-24 md:pb-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* About Section */}
           <div>
