@@ -13,7 +13,9 @@ import Team from "./pages/Team";
 import Schedule from "./pages/Schedule";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import LiveTV from "./pages/LiveTV";
 import NotFound from "./pages/NotFound";
+import RadioPlayer from "./components/RadioPlayer";
 
 const queryClient = new QueryClient();
 
@@ -34,9 +36,11 @@ const App = () => (
           <Route path="/programme" element={<Schedule />} />
           <Route path="/confidentialite" element={<Privacy />} />
           <Route path="/conditions" element={<Terms />} />
+          <Route path="/tv-direct" element={<LiveTV />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <RadioPlayer />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

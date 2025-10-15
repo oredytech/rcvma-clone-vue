@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Play, Radio, Search, Info, Mail, Menu, Home, Users, Calendar, Facebook, Instagram, Twitter, Youtube, Settings, Shield, FileText, Phone } from "lucide-react";
+import { Play, Radio, Search, Info, Mail, Menu, Home, Users, Calendar, Facebook, Instagram, Twitter, Youtube, Settings, Shield, FileText, Phone, Tv } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -99,14 +99,26 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
             </div>
           </Link>
           
-          <Button 
-            size="sm" 
-            variant="secondary"
-            className="bg-white/20 hover:bg-white/30 text-white border-white/40 h-6 text-xs px-2"
-          >
-            <Play className="h-3 w-3 mr-1 fill-current" />
-            EN DIRECT
-          </Button>
+          <div className="flex items-center gap-2">
+            <Link to="/tv-direct">
+              <Button 
+                size="sm" 
+                variant="secondary"
+                className="bg-white/20 hover:bg-white/30 text-white border-white/40 h-6 text-xs px-2"
+              >
+                <Tv className="h-3 w-3 mr-1" />
+                TV
+              </Button>
+            </Link>
+            <Button 
+              size="sm" 
+              variant="secondary"
+              className="bg-white/20 hover:bg-white/30 text-white border-white/40 h-6 text-xs px-2"
+            >
+              <Play className="h-3 w-3 mr-1 fill-current" />
+              EN DIRECT
+            </Button>
+          </div>
         </div>
       </div>
       </header>
