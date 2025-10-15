@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { fetchPostBySlug, formatDate, WordPressPost } from "@/lib/wordpress";
+import { fetchPostBySlug, formatDate, formatWordPressContent, WordPressPost } from "@/lib/wordpress";
 import Header from "@/components/Header";
 import CategoryBadge from "@/components/CategoryBadge";
 import ArticleSidebar from "@/components/ArticleSidebar";
@@ -117,7 +117,7 @@ const Article = () => {
                     prose-table:border-collapse prose-table:w-full prose-table:my-6
                     prose-th:border prose-th:border-border prose-th:bg-muted prose-th:p-3 prose-th:font-bold
                     prose-td:border prose-td:border-border prose-td:p-3"
-                  dangerouslySetInnerHTML={{ __html: post.content.rendered }}
+                  dangerouslySetInnerHTML={{ __html: formatWordPressContent(post.content.rendered) }}
                 />
               </div>
             </article>

@@ -88,3 +88,39 @@ export function stripHtml(html: string): string {
   tmp.innerHTML = html;
   return tmp.textContent || tmp.innerText || '';
 }
+
+export function formatWordPressContent(html: string): string {
+  if (!html) return "";
+  
+  let content = html;
+  
+  // Nettoyer les espaces excessifs
+  content = content.replace(/\s+/g, ' ').trim();
+  
+  // Détecter et formater les citations (texte entre guillemets)
+  content = content.replace(/(?<=>|\s)"([^"]+)"(?=<|\.|\s|,)/g, '<blockquote>$1</blockquote>');
+  
+  // S'assurer que les paragraphes vides sont supprimés
+  content = content.replace(/<p>\s*<\/p>/g, '');
+  
+  // Ajouter des paragraphes si le texte n'en a pas
+  if (!content.includes('<p>') && !content.includes('<h')) {
+    // Diviser par double saut de ligne ou points suivis de majuscule
+    const paragraphs = content.split(/\n\n+/).filter(p => p.trim());
+    content = paragraphs.map(p => `<p>${p.trim()}</p>`).join('\n');
+  }
+  
+  // Espacer les titres
+  content = content.replace(/(<\/h[1-6]>)(?!<)/g, '$1\n');
+  content = content.replace(/(?<!>)(<h[1-6])/g, '\n$1');
+  
+  // Espacer les blockquotes
+  content = content.replace(/(<\/blockquote>)(?!<)/g, '$1\n');
+  content = content.replace(/(?<!>)(<blockquote)/g, '\n$1');
+  
+  // Espacer les listes
+  content = content.replace(/(<\/[ou]l>)(?!<)/g, '$1\n');
+  content = content.replace(/(?<!>)(<[ou]l)/g, '\n$1');
+  
+  return content;
+}
