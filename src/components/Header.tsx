@@ -19,6 +19,8 @@ import { WordPressCategory } from "@/lib/wordpress";
 import CategoryBar from "@/components/CategoryBar";
 import DateTimeDisplay from "@/components/DateTimeDisplay";
 import { useState } from "react";
+import { useRadioPlayer } from "@/hooks/useRadioPlayer";
+import { useScrollDirection } from "@/hooks/useScrollDirection";
 
 interface HeaderProps {
   categories?: WordPressCategory[];
@@ -29,12 +31,28 @@ interface HeaderProps {
 const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: HeaderProps) => {
   const isMobile = useIsMobile();
   const [isCategoriesOpen, setIsCategoriesOpen] = useState<string | null>(null);
+  const { setIsVisible, togglePlay } = useRadioPlayer();
+  const scrollDirection = useScrollDirection();
+
+  const handleLiveClick = () => {
+    if (isMobile) {
+      setIsVisible(true);
+      togglePlay();
+    }
+  };
 
   return (
     <>
       {/* Barre d'heure/date mobile en haut */}
       {isMobile && (
-        <div className="fixed top-0 left-0 right-0 bg-primary text-primary-foreground z-50 h-[40px] flex items-center justify-between px-4 border-b border-white/10">
+        <div 
+          className={`
+            fixed top-0 left-0 right-0 bg-primary text-primary-foreground z-50 h-[40px] 
+            flex items-center justify-between px-4 border-b border-white/10
+            transition-transform duration-300
+            ${scrollDirection === 'down' ? '-translate-y-full' : 'translate-y-0'}
+          `}
+        >
           <DateTimeDisplay split type="time" />
           <DateTimeDisplay split type="date" />
         </div>
@@ -113,6 +131,7 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
             <Button 
               size="sm" 
               variant="secondary"
+              onClick={handleLiveClick}
               className="bg-white/20 hover:bg-white/30 text-white border-white/40 h-6 text-xs px-2"
             >
               <Play className="h-3 w-3 mr-1 fill-current" />
@@ -136,7 +155,7 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
       {isMobile && (
         <>
           <nav className="fixed bottom-0 left-0 right-0 bg-primary text-primary-foreground z-50 pb-safe rounded-tl-[8px] rounded-tr-[8px]">
-            <div className="flex items-center justify-around h-[70px]">
+            <div className="flex items-center justify-around h-[63px]">
               <Link to="/" className="flex flex-col items-center gap-1 px-3 py-2 hover:bg-white/10 rounded transition-colors">
                 <Home className="h-5 w-5" />
                 <span className="text-[10px]">Accueil</span>

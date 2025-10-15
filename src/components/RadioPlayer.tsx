@@ -1,19 +1,53 @@
-import { Play, Pause, Volume2, Radio } from "lucide-react";
+import { Play, Pause, Volume2, Radio, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useRadioPlayer } from "@/hooks/useRadioPlayer";
+import { useScrollDirection } from "@/hooks/useScrollDirection";
 
 const RadioPlayer = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState([70]);
   const isMobile = useIsMobile();
+  const { isVisible, isPlaying, setIsVisible, togglePlay } = useRadioPlayer();
+  const scrollDirection = useScrollDirection();
+  const [isMinimized, setIsMinimized] = useState(false);
+
+  useEffect(() => {
+    if (isMobile && scrollDirection === 'down' && window.scrollY > 200) {
+      setIsMinimized(true);
+    } else if (scrollDirection === 'up' || window.scrollY <= 200) {
+      setIsMinimized(false);
+    }
+  }, [scrollDirection, isMobile]);
+
+  if (!isVisible) return null;
+
+  if (isMobile && isMinimized) {
+    return (
+      <div 
+        className="fixed bottom-[63px] right-4 z-40 animate-in slide-in-from-bottom-2"
+      >
+        <Button
+          size="sm"
+          onClick={togglePlay}
+          className="bg-primary hover:bg-primary/90 h-12 w-12 p-0 rounded-full shadow-lg"
+        >
+          {isPlaying ? (
+            <Pause className="h-5 w-5" />
+          ) : (
+            <Play className="h-5 w-5 ml-0.5" />
+          )}
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div 
       className={`
         fixed left-0 right-0 bg-slate-900 text-white shadow-2xl border-t border-slate-800 z-40
-        ${isMobile ? 'bottom-[70px]' : 'bottom-0'}
+        ${isMobile ? 'bottom-[63px]' : 'bottom-0'}
       `}
     >
       <div className="container mx-auto px-4 py-3">
@@ -48,7 +82,7 @@ const RadioPlayer = () => {
             {/* Bouton play/pause */}
             <Button
               size="sm"
-              onClick={() => setIsPlaying(!isPlaying)}
+              onClick={togglePlay}
               className="bg-primary hover:bg-primary/90 h-9 w-9 p-0"
             >
               {isPlaying ? (
@@ -56,6 +90,16 @@ const RadioPlayer = () => {
               ) : (
                 <Play className="h-4 w-4 ml-0.5" />
               )}
+            </Button>
+
+            {/* Bouton fermer */}
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => setIsVisible(false)}
+              className="h-9 w-9 p-0 hover:bg-white/10"
+            >
+              <X className="h-4 w-4" />
             </Button>
           </div>
         </div>
