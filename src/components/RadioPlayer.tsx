@@ -1,7 +1,7 @@
 import { Play, Pause, Volume2, Radio, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useRadioPlayer } from "@/hooks/useRadioPlayer";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
@@ -9,17 +9,39 @@ import { useScrollDirection } from "@/hooks/useScrollDirection";
 const RadioPlayer = () => {
   const [volume, setVolume] = useState([70]);
   const isMobile = useIsMobile();
-  const { isVisible, isPlaying, setIsVisible, togglePlay } = useRadioPlayer();
+  const { isVisible, isPlaying, setIsVisible, setIsPlaying, togglePlay } = useRadioPlayer();
   const scrollDirection = useScrollDirection();
   const [isMinimized, setIsMinimized] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    if (isMobile && scrollDirection === 'down' && window.scrollY > 200) {
+    if (isMobile && scrollDirection === 'down' && window.scrollY > 50) {
       setIsMinimized(true);
-    } else if (scrollDirection === 'up' || window.scrollY <= 200) {
+    } else if (scrollDirection === 'up' || window.scrollY <= 50) {
       setIsMinimized(false);
     }
   }, [scrollDirection, isMobile]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.play().catch(err => console.error("Erreur lecture audio:", err));
+      } else {
+        audioRef.current.pause();
+      }
+    }
+  }, [isPlaying]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume[0] / 100;
+    }
+  }, [volume]);
+
+  // Sur desktop, toujours visible
+  if (!isMobile && !isVisible) {
+    setIsVisible(true);
+  }
 
   if (!isVisible) return null;
 
@@ -44,14 +66,17 @@ const RadioPlayer = () => {
   }
 
   return (
-    <div 
-      className={`
-        fixed left-0 right-0 bg-slate-900 text-white shadow-2xl border-t border-slate-800 z-40
-        ${isMobile ? 'bottom-[63px]' : 'bottom-0'}
-      `}
-    >
-      <div className="container mx-auto px-4 py-3">
-        <div className="flex items-center justify-between gap-4">
+    <>
+      <audio ref={audioRef} src="https://stream.zeno.fm/qdgq60qkb3gvv" preload="none" />
+      
+      <div 
+        className={`
+          fixed left-0 right-0 bg-slate-900 text-white shadow-2xl border-t border-slate-800 z-40
+          ${isMobile ? 'bottom-[63px] rounded-tl-[8px] rounded-tr-[8px]' : 'bottom-0'}
+        `}
+      >
+        <div className="container mx-auto px-4 py-2">
+          <div className="flex items-center justify-between gap-4">
           {/* Info radio */}
           <div className="flex items-center gap-3 flex-1 min-w-0">
             <div className="flex-shrink-0 bg-primary/20 p-2 rounded-lg">
@@ -92,19 +117,22 @@ const RadioPlayer = () => {
               )}
             </Button>
 
-            {/* Bouton fermer */}
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={() => setIsVisible(false)}
-              className="h-9 w-9 p-0 hover:bg-white/10"
-            >
-              <X className="h-4 w-4" />
-            </Button>
+            {/* Bouton fermer - masqué sur desktop */}
+            {isMobile && (
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => setIsVisible(false)}
+                className="h-9 w-9 p-0 hover:bg-white/10"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
