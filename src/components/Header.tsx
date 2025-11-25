@@ -58,7 +58,7 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
         </div>
       )}
 
-      <header className={`bg-primary text-primary-foreground sticky top-0 z-50 shadow-lg`}>
+      <header className={`bg-primary text-primary-foreground sticky z-50 shadow-lg ${isMobile && scrollDirection !== 'down' ? 'top-[40px]' : 'top-0'}`}>
         {/* Menu supérieur - masqué sur mobile */}
         {!isMobile && (
           <div className="border-b border-white/10">

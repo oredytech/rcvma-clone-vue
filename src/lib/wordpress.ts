@@ -1,4 +1,4 @@
-const WP_API_BASE = 'https://rcvma.net/wp-json/wp/v2';
+const WP_API_BASE = 'https://totalementactus.net/wp-json/wp/v2';
 
 export interface WordPressPost {
   id: number;
