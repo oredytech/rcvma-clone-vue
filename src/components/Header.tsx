@@ -65,9 +65,9 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
         {!isMobile && (
           <div className="border-b border-white/10">
             <div className="container mx-auto px-4">
-              <div className="flex items-center justify-end py-1 gap-4">
+              <div className="flex items-center justify-between py-1">
                 <DateTimeDisplay />
-                <NavigationMenu className="max-w-full ml-auto">
+                <NavigationMenu className="max-w-full">
                   <NavigationMenuList className="gap-1 justify-end">
                     <NavigationMenuItem>
                       <NavigationMenuLink
