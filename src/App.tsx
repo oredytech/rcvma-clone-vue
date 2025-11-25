@@ -16,6 +16,7 @@ import Terms from "./pages/Terms";
 import LiveTV from "./pages/LiveTV";
 import NotFound from "./pages/NotFound";
 import RadioPlayer from "./components/RadioPlayer";
+import CookieBanner from "./components/CookieBanner";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +42,7 @@ const App = () => (
           <Route path="*" element={<NotFound />} />
         </Routes>
         <RadioPlayer />
+        <CookieBanner />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

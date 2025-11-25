@@ -21,6 +21,7 @@ import DateTimeDisplay from "@/components/DateTimeDisplay";
 import { useState } from "react";
 import { useRadioPlayer } from "@/hooks/useRadioPlayer";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
+import CookieSettings from "@/components/CookieSettings";
 
 interface HeaderProps {
   categories?: WordPressCategory[];
@@ -31,6 +32,7 @@ interface HeaderProps {
 const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: HeaderProps) => {
   const isMobile = useIsMobile();
   const [isCategoriesOpen, setIsCategoriesOpen] = useState<string | null>(null);
+  const [showCookieSettings, setShowCookieSettings] = useState(false);
   const { setIsVisible, togglePlay } = useRadioPlayer();
   const scrollDirection = useScrollDirection();
 
@@ -288,7 +290,13 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
                     <div>
                       <h3 className="font-bold text-lg mb-3 text-foreground">Paramètres & Légal</h3>
                       <div className="space-y-2">
-                        <button className="flex items-center gap-3 p-3 bg-card border border-border rounded-lg hover:border-primary transition-all w-full text-left">
+                        <button 
+                          onClick={() => {
+                            setShowCookieSettings(true);
+                            setIsCategoriesOpen(null);
+                          }}
+                          className="flex items-center gap-3 p-3 bg-card border border-border rounded-lg hover:border-primary transition-all w-full text-left"
+                        >
                           <Settings className="h-5 w-5 text-primary" />
                           <span>Paramètres des cookies</span>
                         </button>
@@ -322,6 +330,9 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
           </nav>
         </>
       )}
+
+      {/* Dialog des paramètres de cookies */}
+      <CookieSettings open={showCookieSettings} onOpenChange={setShowCookieSettings} />
     </>
   );
 };
