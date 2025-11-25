@@ -43,27 +43,30 @@ const RadioPlayer = () => {
     setIsVisible(true);
   }
 
-  if (!isVisible) return null;
-
-  if (isMobile && isMinimized) {
+  if (isMobile && isMinimized && isVisible) {
     return (
-      <div 
-        className="fixed bottom-[63px] right-4 z-40 animate-in slide-in-from-bottom-2"
-      >
-        <Button
-          size="sm"
-          onClick={togglePlay}
-          className="bg-primary hover:bg-primary/90 h-12 w-12 p-0 rounded-full shadow-lg"
+      <>
+        <audio ref={audioRef} src="https://stream.zeno.fm/qdgq60qkb3gvv" preload="none" />
+        <div 
+          className="fixed bottom-[63px] right-4 z-40 animate-in slide-in-from-bottom-2"
         >
-          {isPlaying ? (
-            <Pause className="h-5 w-5" />
-          ) : (
-            <Play className="h-5 w-5 ml-0.5" />
-          )}
-        </Button>
-      </div>
+          <Button
+            size="sm"
+            onClick={togglePlay}
+            className="bg-primary hover:bg-primary/90 h-11 w-11 p-0 rounded-full shadow-lg"
+          >
+            {isPlaying ? (
+              <Pause className="h-4 w-4" />
+            ) : (
+              <Play className="h-4 w-4 ml-0.5" />
+            )}
+          </Button>
+        </div>
+      </>
     );
   }
+
+  if (!isVisible) return null;
 
   return (
     <>
