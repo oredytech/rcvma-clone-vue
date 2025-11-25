@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Play, Radio, Search, Info, Mail, Menu, Home, Users, Calendar, Facebook, Instagram, Twitter, Youtube, Settings, Shield, FileText, Phone, Tv } from "lucide-react";
+import { Play, Radio, Search, Info, Mail, Menu, Home, Users, Calendar, Facebook, Instagram, Twitter, Youtube, Settings, Shield, FileText, Phone, Tv, Target, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -33,7 +33,7 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
   const isMobile = useIsMobile();
   const [isCategoriesOpen, setIsCategoriesOpen] = useState<string | null>(null);
   const [showCookieSettings, setShowCookieSettings] = useState(false);
-  const { setIsVisible, togglePlay } = useRadioPlayer();
+  const { isVisible: isPlayerVisible, setIsVisible, togglePlay } = useRadioPlayer();
   const scrollDirection = useScrollDirection();
 
   const handleLiveClick = () => {
@@ -156,7 +156,7 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
       {/* Menu mobile en bas */}
       {isMobile && (
         <>
-          <nav className="fixed bottom-0 left-0 right-0 bg-primary text-primary-foreground z-50 pb-safe rounded-tl-[8px] rounded-tr-[8px]">
+          <nav className={`fixed bottom-0 left-0 right-0 bg-primary text-primary-foreground z-50 pb-safe ${!isPlayerVisible ? 'rounded-tl-[8px] rounded-tr-[8px]' : ''}`}>
             <div className="flex items-center justify-around h-[63px]">
               <Link to="/" className="flex flex-col items-center gap-1 px-3 py-2 hover:bg-white/10 rounded transition-colors">
                 <Home className="h-5 w-5" />
@@ -172,13 +172,75 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
                 </SheetTrigger>
                 <SheetContent side="bottom" className="h-[85vh] overflow-y-auto rounded-tl-[12px] rounded-tr-[12px] border-t border-l border-r border-border">
                   <SheetHeader>
-                    <SheetTitle>À propos</SheetTitle>
+                    <SheetTitle className="flex items-center gap-2">
+                      <Radio className="h-5 w-5 text-primary" />
+                      À propos de RCVMA
+                    </SheetTitle>
                   </SheetHeader>
-                  <div className="mt-6">
-                    <p className="text-muted-foreground">
-                      Radio Communautaire de la Vie Meilleure en Action (RCVMA) est une radio communautaire
-                      engagée dans l'information et le développement local.
-                    </p>
+                  <div className="mt-6 space-y-8">
+                    <div className="text-center">
+                      <p className="text-lg text-muted-foreground">
+                        Radio Communautaire de la Vie Meilleure en Action
+                      </p>
+                    </div>
+
+                    <section>
+                      <h3 className="text-xl font-bold mb-3 text-foreground flex items-center gap-2">
+                        <Target className="h-5 w-5 text-primary" />
+                        Notre Mission
+                      </h3>
+                      <p className="text-muted-foreground leading-relaxed">
+                        RCVMA est une radio communautaire dédiée à l'information, l'éducation et le divertissement 
+                        de nos auditeurs. Nous nous engageons à promouvoir les valeurs de la communauté, à donner 
+                        une voix aux sans-voix et à contribuer au développement social et culturel de notre région.
+                      </p>
+                    </section>
+
+                    <section>
+                      <h3 className="text-xl font-bold mb-3 text-foreground flex items-center gap-2">
+                        <Heart className="h-5 w-5 text-primary" />
+                        Nos Valeurs
+                      </h3>
+                      <ul className="space-y-3 text-muted-foreground">
+                        <li className="flex items-start gap-2">
+                          <span className="text-primary font-bold">•</span>
+                          <span><strong>Intégrité :</strong> Nous nous engageons à diffuser des informations vérifiées et véridiques</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-primary font-bold">•</span>
+                          <span><strong>Communauté :</strong> Nous plaçons les besoins de notre communauté au cœur de nos préoccupations</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-primary font-bold">•</span>
+                          <span><strong>Excellence :</strong> Nous visons l'excellence dans tous nos programmes et services</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-primary font-bold">•</span>
+                          <span><strong>Innovation :</strong> Nous adoptons les nouvelles technologies pour mieux servir nos auditeurs</span>
+                        </li>
+                      </ul>
+                    </section>
+
+                    <section>
+                      <h3 className="text-xl font-bold mb-3 text-foreground flex items-center gap-2">
+                        <Users className="h-5 w-5 text-primary" />
+                        Notre Équipe
+                      </h3>
+                      <p className="text-muted-foreground leading-relaxed">
+                        Notre équipe est composée de professionnels passionnés et dévoués qui travaillent sans relâche 
+                        pour vous apporter le meilleur contenu radiophonique. Journalistes, animateurs, techniciens et 
+                        producteurs collaborent pour créer des programmes de qualité qui informent, éduquent et divertissent.
+                      </p>
+                    </section>
+
+                    <section className="bg-card border border-border rounded-lg p-4">
+                      <h3 className="text-xl font-bold mb-3 text-foreground">Notre Histoire</h3>
+                      <p className="text-muted-foreground leading-relaxed">
+                        Fondée en 2015, RCVMA est née de la volonté de créer un espace médiatique au service de la 
+                        communauté. Au fil des années, nous avons grandi et évolué, tout en restant fidèles à notre 
+                        mission première : être la voix de notre communauté et contribuer à son épanouissement.
+                      </p>
+                    </section>
                   </div>
                 </SheetContent>
               </Sheet>
