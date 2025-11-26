@@ -4,16 +4,13 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchPosts, fetchCategories, WordPressPost, WordPressCategory } from "@/lib/wordpress";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import ArticleCard from "@/components/ArticleCard";
-import CategoryFilter from "@/components/CategoryFilter";
+import CategorySection from "@/components/CategorySection";
 import FeaturedSection from "@/components/FeaturedSection";
 import ArticlesSlider from "@/components/ArticlesSlider";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
 const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
-  const [page, setPage] = useState(1);
   useEffect(() => {
     const categoryParam = searchParams.get('category');
     if (categoryParam) {
@@ -26,13 +23,7 @@ const Home = () => {
     queryKey: ['featured-posts'],
     queryFn: () => fetchPosts(1, 5)
   });
-  const {
-    data: posts = [],
-    isLoading: postsLoading
-  } = useQuery<WordPressPost[]>({
-    queryKey: ['posts', page, selectedCategory],
-    queryFn: () => fetchPosts(page, 12, selectedCategory || undefined)
-  });
+  
   const {
     data: categories = []
   } = useQuery<WordPressCategory[]>({
@@ -41,7 +32,6 @@ const Home = () => {
   });
   const handleCategorySelect = (categoryId: number | null) => {
     setSelectedCategory(categoryId);
-    setPage(1);
     if (categoryId) {
       setSearchParams({
         category: categoryId.toString()
@@ -50,42 +40,47 @@ const Home = () => {
       setSearchParams({});
     }
   };
-  const handleLoadMore = () => {
-    setPage(prev => prev + 1);
+  const handleViewMore = (categoryId: number) => {
+    setSelectedCategory(categoryId);
+    setSearchParams({ category: categoryId.toString() });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   return <div className="min-h-screen bg-background">
       <Header categories={categories} selectedCategory={selectedCategory} onCategorySelect={handleCategorySelect} />
       
       <main className="container mx-auto py-0 px-[7px]">
-        <div className="mb-8">
-          
-          
-        </div>
-
         <ArticlesSlider posts={featuredPosts} />
 
         <FeaturedSection posts={featuredPosts} />
 
-        {postsLoading && page === 1 ? <div className="flex items-center justify-center py-20">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-          </div> : <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              {posts.map(post => <ArticleCard key={post.id} post={post} />)}
-            </div>
-
-            {posts.length > 0 && posts.length % 12 === 0 && <div className="flex justify-center">
-                <Button onClick={handleLoadMore} size="lg" disabled={postsLoading}>
-                  {postsLoading ? <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Chargement...
-                    </> : 'Charger plus d\'articles'}
-                </Button>
-              </div>}
-          </>}
-
-        {!postsLoading && posts.length === 0 && <div className="text-center py-20">
-            <p className="text-muted-foreground text-lg">Aucun article trouvé</p>
-          </div>}
+        {selectedCategory ? (
+          <div className="mt-8">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setSelectedCategory(null);
+                setSearchParams({});
+              }}
+              className="mb-6"
+            >
+              ← Retour à toutes les catégories
+            </Button>
+            <CategorySection
+              category={categories.find(c => c.id === selectedCategory)!}
+              onViewMore={handleViewMore}
+            />
+          </div>
+        ) : (
+          <div className="mt-8">
+            {categories.map((category) => (
+              <CategorySection
+                key={category.id}
+                category={category}
+                onViewMore={handleViewMore}
+              />
+            ))}
+          </div>
+        )}
       </main>
 
       <Footer />
