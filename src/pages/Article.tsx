@@ -100,13 +100,13 @@ const Article = () => {
                   className="prose prose-base md:prose-lg max-w-none
                     prose-headings:font-bold prose-headings:text-foreground prose-headings:mt-8 prose-headings:mb-4
                     prose-h2:text-2xl prose-h3:text-xl prose-h4:text-lg
-                    prose-p:text-foreground prose-p:leading-relaxed prose-p:mb-6 prose-p:text-justify
+                    prose-p:text-foreground prose-p:leading-relaxed prose-p:mb-6 prose-p:mt-0 prose-p:text-justify
                     prose-a:text-primary prose-a:font-medium prose-a:no-underline hover:prose-a:underline
                     prose-strong:text-foreground prose-strong:font-bold
                     prose-em:text-foreground prose-em:italic
-                    prose-ul:list-disc prose-ul:pl-6 prose-ul:mb-6 prose-ul:space-y-2
-                    prose-ol:list-decimal prose-ol:pl-6 prose-ol:mb-6 prose-ol:space-y-2
-                    prose-li:text-foreground prose-li:leading-relaxed
+                    prose-ul:list-disc prose-ul:pl-6 prose-ul:mb-6 prose-ul:mt-6 prose-ul:space-y-2
+                    prose-ol:list-decimal prose-ol:pl-6 prose-ol:mb-6 prose-ol:mt-6 prose-ol:space-y-2
+                    prose-li:text-foreground prose-li:leading-relaxed prose-li:mb-2
                     prose-img:rounded-lg prose-img:shadow-lg prose-img:my-8 prose-img:w-full
                     prose-blockquote:border-l-4 prose-blockquote:border-primary 
                     prose-blockquote:pl-6 prose-blockquote:pr-4 prose-blockquote:py-4 
@@ -117,7 +117,8 @@ const Article = () => {
                     prose-hr:border-border prose-hr:my-8
                     prose-table:border-collapse prose-table:w-full prose-table:my-6
                     prose-th:border prose-th:border-border prose-th:bg-muted prose-th:p-3 prose-th:font-bold
-                    prose-td:border prose-td:border-border prose-td:p-3"
+                    prose-td:border prose-td:border-border prose-td:p-3
+                    [&>p]:mb-6 [&>p]:mt-0 [&>p]:block"
                   dangerouslySetInnerHTML={{ __html: formatWordPressContent(post.content.rendered) }}
                 />
               </div>

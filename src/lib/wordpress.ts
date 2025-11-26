@@ -94,51 +94,27 @@ export function formatWordPressContent(html: string): string {
   
   let content = html;
   
-  // Remplacer les <br> consécutifs par des paragraphes
-  content = content.replace(/(<br\s*\/?>\s*){2,}/gi, '</p><p>');
+  // Remplacer les <br> simples et multiples par des fins de paragraphes
+  content = content.replace(/<br\s*\/?>\s*<br\s*\/?>/gi, '</p><p>');
+  content = content.replace(/<br\s*\/?>/gi, '</p><p>');
   
-  // S'assurer que les paragraphes vides sont supprimés
-  content = content.replace(/<p>\s*<\/p>/g, '');
-  
-  // Ajouter des espaces après les paragraphes pour une meilleure lisibilité
-  content = content.replace(/<\/p>/g, '</p>\n\n');
-  
-  // Ajouter des espaces avant et après les titres
-  content = content.replace(/(<h[1-6][^>]*>)/g, '\n\n$1');
-  content = content.replace(/(<\/h[1-6]>)/g, '$1\n\n');
-  
-  // Ajouter des espaces avant et après les blockquotes
-  content = content.replace(/(<blockquote[^>]*>)/g, '\n\n$1');
-  content = content.replace(/(<\/blockquote>)/g, '$1\n\n');
-  
-  // Ajouter des espaces avant et après les listes
-  content = content.replace(/(<[ou]l[^>]*>)/g, '\n\n$1');
-  content = content.replace(/(<\/[ou]l>)/g, '$1\n\n');
-  
-  // Ajouter des espaces avant et après les images
-  content = content.replace(/(<img[^>]*>)/g, '\n\n$1\n\n');
-  content = content.replace(/(<figure[^>]*>)/g, '\n\n$1');
-  content = content.replace(/(<\/figure>)/g, '$1\n\n');
-  
-  // S'assurer que chaque ligne de liste a un espacement approprié
-  content = content.replace(/<\/li>/g, '</li>\n');
-  
-  // Ajouter des paragraphes si le texte n'en a pas
-  if (!content.includes('<p>') && !content.includes('<h') && !content.includes('<ul>') && !content.includes('<ol>')) {
-    // Diviser par double saut de ligne
-    const paragraphs = content.split(/\n\n+/).filter(p => p.trim());
-    if (paragraphs.length > 1) {
-      content = paragraphs.map(p => `<p>${p.trim()}</p>`).join('\n\n');
-    } else if (!content.startsWith('<')) {
-      content = `<p>${content}</p>`;
+  // S'assurer que chaque ligne de texte est dans un paragraphe
+  if (!content.includes('<p>')) {
+    // Diviser par retours à la ligne
+    const lines = content.split(/\n+/).filter(line => line.trim());
+    if (lines.length > 0) {
+      content = lines.map(line => `<p>${line.trim()}</p>`).join('');
     }
   }
   
-  // Nettoyer les espaces multiples (sauf les sauts de ligne)
-  content = content.replace(/[ \t]+/g, ' ');
+  // S'assurer que les paragraphes vides sont supprimés
+  content = content.replace(/<p>\s*<\/p>/g, '');
+  content = content.replace(/<p>(\s|&nbsp;)*<\/p>/g, '');
   
-  // Nettoyer les sauts de ligne excessifs (max 2)
-  content = content.replace(/\n{3,}/g, '\n\n');
+  // Nettoyer les espaces multiples à l'intérieur des paragraphes
+  content = content.replace(/<p>([^<]+)<\/p>/g, (match, text) => {
+    return `<p>${text.replace(/\s+/g, ' ').trim()}</p>`;
+  });
   
   return content.trim();
 }
