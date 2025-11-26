@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchPostBySlug, formatDate, formatWordPressContent, WordPressPost } from "@/lib/wordpress";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import CategoryBadge from "@/components/CategoryBadge";
 import ArticleSidebar from "@/components/ArticleSidebar";
 import { Button } from "@/components/ui/button";
@@ -147,12 +148,7 @@ const Article = () => {
         )}
       </main>
 
-      <footer className="bg-card border-t border-border mt-12 py-8">
-        <div className="container mx-auto px-4 text-center text-muted-foreground">
-          <p>&copy; 2025 RCVMA - Tous droits réservés</p>
-          <p className="text-sm mt-2">Radio Communautaire de la Vie Meilleure en Action</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
