@@ -18,6 +18,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { WordPressCategory } from "@/lib/wordpress";
 import CategoryBar from "@/components/CategoryBar";
 import DateTimeDisplay from "@/components/DateTimeDisplay";
+import BreakingNews from "@/components/BreakingNews";
 import { useState } from "react";
 import { useRadioPlayer } from "@/hooks/useRadioPlayer";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
@@ -67,8 +68,9 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
             <div className="container mx-auto px-4">
               <div className="flex items-center justify-between py-1">
                 <DateTimeDisplay />
-                <NavigationMenu className="max-w-full">
-                  <NavigationMenuList className="gap-1 justify-end">
+                <div className="ml-auto">
+                  <NavigationMenu>
+                    <NavigationMenuList className="gap-1">
                     <NavigationMenuItem>
                       <NavigationMenuLink
                         href="/a-propos"
@@ -104,6 +106,7 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
                     </NavigationMenuItem>
                   </NavigationMenuList>
                 </NavigationMenu>
+                </div>
               </div>
             </div>
           </div>
@@ -152,6 +155,9 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
           onCategorySelect={onCategorySelect} 
         />
       )}
+
+      {/* Bande Breaking News */}
+      <BreakingNews />
 
       {/* Menu mobile en bas */}
       {isMobile && (
