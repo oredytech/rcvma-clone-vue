@@ -18,9 +18,9 @@ const About = () => {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <Radio className="h-16 w-16 mx-auto mb-4 text-primary" />
-            <h1 className="text-4xl font-bold mb-4 text-foreground">À propos de RCVMA</h1>
+            <h1 className="text-4xl font-bold mb-4 text-foreground">À propos d'OREDY MEDIA</h1>
             <p className="text-xl text-muted-foreground">
-              Radio Communautaire de la Vie Meilleure en Action
+              OREDY MEDIA - Radio Communautaire de la Vie Meilleure en Action
             </p>
           </div>
 
@@ -31,7 +31,7 @@ const About = () => {
                 Notre Mission
               </h2>
               <p className="text-muted-foreground leading-relaxed">
-                RCVMA est une radio communautaire dédiée à l'information, l'éducation et le divertissement 
+                OREDY MEDIA est une radio communautaire dédiée à l'information, l'éducation et le divertissement 
                 de nos auditeurs. Nous nous engageons à promouvoir les valeurs de la communauté, à donner 
                 une voix aux sans-voix et à contribuer au développement social et culturel de notre région.
               </p>
@@ -77,7 +77,7 @@ const About = () => {
             <section className="bg-card border border-border rounded-lg p-6">
               <h2 className="text-2xl font-bold mb-4 text-foreground">Notre Histoire</h2>
               <p className="text-muted-foreground leading-relaxed">
-                Fondée en 2015, RCVMA est née de la volonté de créer un espace médiatique au service de la 
+                Fondée en 2015, OREDY MEDIA est née de la volonté de créer un espace médiatique au service de la 
                 communauté. Au fil des années, nous avons grandi et évolué, tout en restant fidèles à notre 
                 mission première : être la voix de notre communauté et contribuer à son épanouissement.
               </p>

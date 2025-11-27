@@ -72,7 +72,7 @@ const Privacy = () => {
               </h2>
               <p className="text-muted-foreground">
                 Vous avez le droit d'accéder, de corriger, ou de supprimer vos données personnelles. 
-                Pour exercer ces droits, veuillez nous contacter à l'adresse: privacy@rcvma.org
+                Pour exercer ces droits, veuillez nous contacter à l'adresse: privacy@oredymedia.org
               </p>
             </section>
 
@@ -89,7 +89,7 @@ const Privacy = () => {
               <p className="text-muted-foreground">
                 Pour toute question concernant cette politique de confidentialité, veuillez nous contacter à:
                 <br />
-                <a href="mailto:privacy@rcvma.org" className="text-primary hover:underline">privacy@rcvma.org</a>
+                <a href="mailto:privacy@oredymedia.org" className="text-primary hover:underline">privacy@oredymedia.org</a>
               </p>
             </section>
           </div>

@@ -62,7 +62,7 @@ const Schedule = () => {
             </div>
             <p className="text-muted-foreground">
               Ce programme est donné à titre indicatif et peut être modifié sans préavis. 
-              Restez à l'écoute de RCVMA pour ne rien manquer de vos émissions préférées.
+              Restez à l'écoute d'OREDY MEDIA pour ne rien manquer de vos émissions préférées.
             </p>
           </div>
         </div>
