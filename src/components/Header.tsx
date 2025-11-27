@@ -1,19 +1,8 @@
 import { Link } from "react-router-dom";
 import { Play, Radio, Search, Info, Mail, Menu, Home, Users, Calendar, Facebook, Instagram, Twitter, Youtube, Settings, Shield, FileText, Phone, Tv, Target, Heart, Podcast } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuItem,
-  NavigationMenuLink,
-} from "@/components/ui/navigation-menu";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink } from "@/components/ui/navigation-menu";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { WordPressCategory } from "@/lib/wordpress";
 import CategoryBar from "@/components/CategoryBar";
@@ -23,48 +12,46 @@ import { useState } from "react";
 import { useRadioPlayer } from "@/hooks/useRadioPlayer";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
 import CookieSettings from "@/components/CookieSettings";
-
 interface HeaderProps {
   categories?: WordPressCategory[];
   selectedCategory?: number | null;
   onCategorySelect?: (categoryId: number | null) => void;
 }
-
-const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: HeaderProps) => {
+const Header = ({
+  categories = [],
+  selectedCategory = null,
+  onCategorySelect
+}: HeaderProps) => {
   const isMobile = useIsMobile();
   const [isCategoriesOpen, setIsCategoriesOpen] = useState<string | null>(null);
   const [showCookieSettings, setShowCookieSettings] = useState(false);
-  const { isVisible: isPlayerVisible, setIsVisible, togglePlay } = useRadioPlayer();
+  const {
+    isVisible: isPlayerVisible,
+    setIsVisible,
+    togglePlay
+  } = useRadioPlayer();
   const scrollDirection = useScrollDirection();
-
   const handleLiveClick = () => {
     if (isMobile) {
       setIsVisible(true);
       togglePlay();
     }
   };
-
-  return (
-    <>
+  return <>
       {/* Barre d'heure/date mobile en haut */}
-      {isMobile && (
-        <div 
-          className={`
+      {isMobile && <div className={`
             fixed top-0 left-0 right-0 bg-primary text-primary-foreground z-50 h-[40px] 
             flex items-center justify-between px-4 border-b border-white/10
             transition-transform duration-300
             ${scrollDirection === 'down' ? '-translate-y-full' : 'translate-y-0'}
-          `}
-        >
+          `}>
           <DateTimeDisplay split type="time" />
           <DateTimeDisplay split type="date" />
-        </div>
-      )}
+        </div>}
 
       <header className={`bg-primary text-primary-foreground sticky z-50 shadow-lg ${isMobile && scrollDirection !== 'down' ? 'top-[40px]' : 'top-0'}`}>
         {/* Menu supérieur - masqué sur mobile */}
-        {!isMobile && (
-          <div className="border-b border-white/10">
+        {!isMobile && <div className="border-b border-white/10">
             <div className="container mx-auto px-4">
               <div className="flex items-center justify-between py-1">
                 <DateTimeDisplay />
@@ -72,42 +59,27 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
                   <NavigationMenu>
                     <NavigationMenuList className="gap-1">
                     <NavigationMenuItem>
-                      <NavigationMenuLink
-                        href="/a-propos"
-                        className="text-xs px-3 py-1 hover:bg-white/10 rounded transition-colors"
-                      >
+                      <NavigationMenuLink href="/a-propos" className="text-xs px-3 py-1 hover:bg-white/10 rounded transition-colors">
                         À propos
                       </NavigationMenuLink>
                     </NavigationMenuItem>
                     <NavigationMenuItem>
-                      <NavigationMenuLink
-                        href="/contacts"
-                        className="text-xs px-3 py-1 hover:bg-white/10 rounded transition-colors"
-                      >
+                      <NavigationMenuLink href="/contacts" className="text-xs px-3 py-1 hover:bg-white/10 rounded transition-colors">
                         Contacts
                       </NavigationMenuLink>
                     </NavigationMenuItem>
                     <NavigationMenuItem>
-                      <NavigationMenuLink
-                        href="/categories"
-                        className="text-xs px-3 py-1 hover:bg-white/10 rounded transition-colors"
-                      >
+                      <NavigationMenuLink href="/categories" className="text-xs px-3 py-1 hover:bg-white/10 rounded transition-colors">
                         Catégories
                       </NavigationMenuLink>
                     </NavigationMenuItem>
                     <NavigationMenuItem>
-                      <NavigationMenuLink
-                        href="/podcasts"
-                        className="text-xs px-3 py-1 hover:bg-white/10 rounded transition-colors"
-                      >
+                      <NavigationMenuLink href="/podcasts" className="text-xs px-3 py-1 hover:bg-white/10 rounded transition-colors">
                         Podcasts
                       </NavigationMenuLink>
                     </NavigationMenuItem>
                     <NavigationMenuItem>
-                      <NavigationMenuLink
-                        href="/rechercher"
-                        className="text-xs px-3 py-1 hover:bg-white/10 rounded transition-colors flex items-center gap-1"
-                      >
+                      <NavigationMenuLink href="/rechercher" className="text-xs px-3 py-1 hover:bg-white/10 rounded transition-colors flex items-center gap-1">
                         <Search className="h-3 w-3" />
                         Rechercher
                       </NavigationMenuLink>
@@ -117,8 +89,7 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          </div>}
 
       {/* En-tête principal */}
       <div className="container mx-auto px-4">
@@ -132,21 +103,12 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
           
           <div className="flex items-center gap-2">
             <Link to="/tv-direct">
-              <Button 
-                size="sm" 
-                variant="secondary"
-                className="bg-white/20 hover:bg-white/30 text-white border-white/40 h-6 text-xs px-2"
-              >
+              <Button size="sm" variant="secondary" className="bg-white/20 hover:bg-white/30 text-white border-white/40 h-6 text-xs px-2">
                 <Tv className="h-3 w-3 mr-1" />
                 TV
               </Button>
             </Link>
-            <Button 
-              size="sm" 
-              variant="secondary"
-              onClick={handleLiveClick}
-              className="bg-white/20 hover:bg-white/30 text-white border-white/40 h-6 text-xs px-2"
-            >
+            <Button size="sm" variant="secondary" onClick={handleLiveClick} className="bg-white/20 hover:bg-white/30 text-white border-white/40 h-6 text-xs px-2">
               <Play className="h-3 w-3 mr-1 fill-current" />
               EN DIRECT
             </Button>
@@ -156,20 +118,13 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
       </header>
 
       {/* Barre de catégories - masquée sur mobile */}
-      {!isMobile && categories.length > 0 && onCategorySelect && (
-        <CategoryBar 
-          categories={categories} 
-          selectedCategory={selectedCategory} 
-          onCategorySelect={onCategorySelect} 
-        />
-      )}
+      {!isMobile && categories.length > 0 && onCategorySelect && <CategoryBar categories={categories} selectedCategory={selectedCategory} onCategorySelect={onCategorySelect} />}
 
       {/* Bande Breaking News */}
       <BreakingNews />
 
       {/* Menu mobile en bas */}
-      {isMobile && (
-        <>
+      {isMobile && <>
           <nav className={`fixed bottom-0 left-0 right-0 bg-primary text-primary-foreground z-50 pb-safe ${!isPlayerVisible ? 'rounded-tl-[8px] rounded-tr-[8px]' : ''}`}>
             <div className="flex items-center justify-around h-[63px]">
               <Link to="/" className="flex flex-col items-center gap-1 px-3 py-2 hover:bg-white/10 rounded transition-colors">
@@ -182,11 +137,11 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
                 <span className="text-[10px]">Podcasts</span>
               </Link>
               
-              <Sheet open={isCategoriesOpen === "about"} onOpenChange={(open) => setIsCategoriesOpen(open ? "about" : null)}>
+              <Sheet open={isCategoriesOpen === "about"} onOpenChange={open => setIsCategoriesOpen(open ? "about" : null)}>
                 <SheetTrigger asChild>
                   <button className={`flex flex-col items-center gap-1 px-3 py-2 rounded transition-colors ${isCategoriesOpen === "about" ? "bg-white/20" : "hover:bg-white/10"}`}>
                     <Info className="h-5 w-5" />
-                    <span className="text-[10px]">À propos</span>
+                    <span className="text-xs">Nous</span>
                   </button>
                 </SheetTrigger>
                 <SheetContent side="bottom" className="h-[85vh] overflow-y-auto rounded-tl-[12px] rounded-tr-[12px] border-t border-l border-r border-border">
@@ -264,7 +219,7 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
                 </SheetContent>
               </Sheet>
 
-              <Sheet open={isCategoriesOpen === "contact"} onOpenChange={(open) => setIsCategoriesOpen(open ? "contact" : null)}>
+              <Sheet open={isCategoriesOpen === "contact"} onOpenChange={open => setIsCategoriesOpen(open ? "contact" : null)}>
                 <SheetTrigger asChild>
                   <button className={`flex flex-col items-center gap-1 px-3 py-2 rounded transition-colors ${isCategoriesOpen === "contact" ? "bg-white/20" : "hover:bg-white/10"}`}>
                     <Mail className="h-5 w-5" />
@@ -292,7 +247,7 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
                 </SheetContent>
               </Sheet>
               
-              <Sheet open={isCategoriesOpen === "categories"} onOpenChange={(open) => setIsCategoriesOpen(open ? "categories" : null)}>
+              <Sheet open={isCategoriesOpen === "categories"} onOpenChange={open => setIsCategoriesOpen(open ? "categories" : null)}>
                 <SheetTrigger asChild>
                   <button className={`flex flex-col items-center gap-1 px-3 py-2 rounded transition-colors ${isCategoriesOpen === "categories" ? "bg-white/20" : "hover:bg-white/10"}`}>
                     <Menu className="h-5 w-5" />
@@ -309,19 +264,12 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
                     <div>
                       <h3 className="font-bold text-lg mb-3 text-foreground">Catégories</h3>
                       <div className="grid grid-cols-2 gap-2">
-                        {categories.map((category) => (
-                          <Link
-                            key={category.id}
-                            to={`/categories?category=${category.id}`}
-                            onClick={() => {
-                              setIsCategoriesOpen(null);
-                              onCategorySelect?.(category.id);
-                            }}
-                            className="bg-card border border-border rounded-lg p-3 hover:border-primary transition-all text-sm"
-                          >
+                        {categories.map(category => <Link key={category.id} to={`/categories?category=${category.id}`} onClick={() => {
+                      setIsCategoriesOpen(null);
+                      onCategorySelect?.(category.id);
+                    }} className="bg-card border border-border rounded-lg p-3 hover:border-primary transition-all text-sm">
                             {category.name}
-                          </Link>
-                        ))}
+                          </Link>)}
                       </div>
                     </div>
 
@@ -329,19 +277,11 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
                     <div>
                       <h3 className="font-bold text-lg mb-3 text-foreground">Navigation</h3>
                       <div className="space-y-2">
-                        <Link 
-                          to="/equipe" 
-                          onClick={() => setIsCategoriesOpen(null)}
-                          className="flex items-center gap-3 p-3 bg-card border border-border rounded-lg hover:border-primary transition-all"
-                        >
+                        <Link to="/equipe" onClick={() => setIsCategoriesOpen(null)} className="flex items-center gap-3 p-3 bg-card border border-border rounded-lg hover:border-primary transition-all">
                           <Users className="h-5 w-5 text-primary" />
                           <span>L'équipe</span>
                         </Link>
-                        <Link 
-                          to="/programme" 
-                          onClick={() => setIsCategoriesOpen(null)}
-                          className="flex items-center gap-3 p-3 bg-card border border-border rounded-lg hover:border-primary transition-all"
-                        >
+                        <Link to="/programme" onClick={() => setIsCategoriesOpen(null)} className="flex items-center gap-3 p-3 bg-card border border-border rounded-lg hover:border-primary transition-all">
                           <Calendar className="h-5 w-5 text-primary" />
                           <span>Le programme</span>
                         </Link>
@@ -371,29 +311,18 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
                     <div>
                       <h3 className="font-bold text-lg mb-3 text-foreground">Paramètres & Légal</h3>
                       <div className="space-y-2">
-                        <button 
-                          onClick={() => {
-                            setShowCookieSettings(true);
-                            setIsCategoriesOpen(null);
-                          }}
-                          className="flex items-center gap-3 p-3 bg-card border border-border rounded-lg hover:border-primary transition-all w-full text-left"
-                        >
+                        <button onClick={() => {
+                      setShowCookieSettings(true);
+                      setIsCategoriesOpen(null);
+                    }} className="flex items-center gap-3 p-3 bg-card border border-border rounded-lg hover:border-primary transition-all w-full text-left">
                           <Settings className="h-5 w-5 text-primary" />
                           <span>Paramètres des cookies</span>
                         </button>
-                        <Link 
-                          to="/confidentialite" 
-                          onClick={() => setIsCategoriesOpen(null)}
-                          className="flex items-center gap-3 p-3 bg-card border border-border rounded-lg hover:border-primary transition-all"
-                        >
+                        <Link to="/confidentialite" onClick={() => setIsCategoriesOpen(null)} className="flex items-center gap-3 p-3 bg-card border border-border rounded-lg hover:border-primary transition-all">
                           <Shield className="h-5 w-5 text-primary" />
                           <span>Politique de confidentialité</span>
                         </Link>
-                        <Link 
-                          to="/conditions" 
-                          onClick={() => setIsCategoriesOpen(null)}
-                          className="flex items-center gap-3 p-3 bg-card border border-border rounded-lg hover:border-primary transition-all"
-                        >
+                        <Link to="/conditions" onClick={() => setIsCategoriesOpen(null)} className="flex items-center gap-3 p-3 bg-card border border-border rounded-lg hover:border-primary transition-all">
                           <FileText className="h-5 w-5 text-primary" />
                           <span>Conditions d'utilisation</span>
                         </Link>
@@ -409,13 +338,10 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
               </Link>
             </div>
           </nav>
-        </>
-      )}
+        </>}
 
       {/* Dialog des paramètres de cookies */}
       <CookieSettings open={showCookieSettings} onOpenChange={setShowCookieSettings} />
-    </>
-  );
+    </>;
 };
-
 export default Header;
