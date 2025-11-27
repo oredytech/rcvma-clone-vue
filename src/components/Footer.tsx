@@ -6,7 +6,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* About Section */}
           <div>
-            <h3 className="text-lg font-bold mb-4 text-foreground">À propos</h3>
+            <h3 className="text-lg font-bold mb-4 text-secondary">À propos</h3>
             <p className="text-sm text-muted-foreground">
               OREDY MEDIA - Radio Communautaire de la Vie Meilleure en Action
             </p>
@@ -14,7 +14,7 @@ const Footer = () => {
 
           {/* Contact Section */}
           <div>
-            <h3 className="text-lg font-bold mb-4 text-foreground">Contact</h3>
+            <h3 className="text-lg font-bold mb-4 text-secondary">Contact</h3>
             <div className="space-y-3">
               <a href="mailto:contact@oredymedia.org" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
                 <Mail className="h-4 w-4" />
@@ -29,7 +29,7 @@ const Footer = () => {
 
           {/* Address Section */}
           <div>
-            <h3 className="text-lg font-bold mb-4 text-foreground">Adresse</h3>
+            <h3 className="text-lg font-bold mb-4 text-secondary">Adresse</h3>
             <div className="flex items-start gap-2 text-sm text-muted-foreground">
               <MapPin className="h-4 w-4 mt-1 flex-shrink-0" />
               <p>
@@ -41,7 +41,7 @@ const Footer = () => {
 
           {/* Social Media Section */}
           <div>
-            <h3 className="text-lg font-bold mb-4 text-foreground">Réseaux sociaux</h3>
+            <h3 className="text-lg font-bold mb-4 text-secondary">Réseaux sociaux</h3>
             <div className="flex gap-4">
               <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                 <Facebook className="h-5 w-5" />
