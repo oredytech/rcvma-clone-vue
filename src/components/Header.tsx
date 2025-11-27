@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Play, Radio, Search, Info, Mail, Menu, Home, Users, Calendar, Facebook, Instagram, Twitter, Youtube, Settings, Shield, FileText, Phone, Tv, Target, Heart } from "lucide-react";
+import { Play, Radio, Search, Info, Mail, Menu, Home, Users, Calendar, Facebook, Instagram, Twitter, Youtube, Settings, Shield, FileText, Phone, Tv, Target, Heart, Podcast } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -97,6 +97,14 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
                     </NavigationMenuItem>
                     <NavigationMenuItem>
                       <NavigationMenuLink
+                        href="/podcasts"
+                        className="text-xs px-3 py-1 hover:bg-white/10 rounded transition-colors"
+                      >
+                        Podcasts
+                      </NavigationMenuLink>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
+                      <NavigationMenuLink
                         href="/rechercher"
                         className="text-xs px-3 py-1 hover:bg-white/10 rounded transition-colors flex items-center gap-1"
                       >
@@ -167,6 +175,11 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
               <Link to="/" className="flex flex-col items-center gap-1 px-3 py-2 hover:bg-white/10 rounded transition-colors">
                 <Home className="h-5 w-5" />
                 <span className="text-[10px]">Accueil</span>
+              </Link>
+
+              <Link to="/podcasts" className="flex flex-col items-center gap-1 px-3 py-2 hover:bg-white/10 rounded transition-colors">
+                <Podcast className="h-5 w-5" />
+                <span className="text-[10px]">Podcasts</span>
               </Link>
               
               <Sheet open={isCategoriesOpen === "about"} onOpenChange={(open) => setIsCategoriesOpen(open ? "about" : null)}>

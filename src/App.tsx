@@ -14,6 +14,7 @@ import Schedule from "./pages/Schedule";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import LiveTV from "./pages/LiveTV";
+import Podcasts from "./pages/Podcasts";
 import NotFound from "./pages/NotFound";
 import RadioPlayer from "./components/RadioPlayer";
 import CookieBanner from "./components/CookieBanner";
@@ -38,6 +39,7 @@ const App = () => (
           <Route path="/confidentialite" element={<Privacy />} />
           <Route path="/conditions" element={<Terms />} />
           <Route path="/tv-direct" element={<LiveTV />} />
+          <Route path="/podcasts" element={<Podcasts />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
