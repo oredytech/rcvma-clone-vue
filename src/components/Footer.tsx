@@ -8,7 +8,7 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-bold mb-4 text-foreground">À propos</h3>
             <p className="text-sm text-muted-foreground">
-              Radio Communautaire de la Vie Meilleure en Action
+              OREDY MEDIA - Radio Communautaire de la Vie Meilleure en Action
             </p>
           </div>
 
@@ -16,9 +16,9 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-bold mb-4 text-foreground">Contact</h3>
             <div className="space-y-3">
-              <a href="mailto:contact@rcvma.org" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
+              <a href="mailto:contact@oredymedia.org" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
                 <Mail className="h-4 w-4" />
-                contact@rcvma.org
+                contact@oredymedia.org
               </a>
               <a href="tel:+243123456789" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
                 <Phone className="h-4 w-4" />
@@ -61,7 +61,7 @@ const Footer = () => {
 
         {/* Copyright */}
         <div className="border-t border-border mt-8 pt-8 text-center text-sm text-muted-foreground py-[8px]">
-          <p>&copy; 2025 RCVMA - Tous droits réservés</p>
+          <p>&copy; 2025 OREDY MEDIA - Tous droits réservés</p>
           <p className="mt-2">
             Fièrement conçu par{" "}
             <a href="https://oredytech.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-semibold">

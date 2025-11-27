@@ -118,7 +118,7 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
           <Link to="/" className="flex items-center gap-2">
             <Radio className="h-5 w-5" />
             <div>
-              <h1 className="text-sm font-bold tracking-tight">RCVMA</h1>
+              <h1 className="text-sm font-bold tracking-tight">OREDY MEDIA</h1>
             </div>
           </Link>
           
@@ -180,7 +180,7 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
                   <SheetHeader>
                     <SheetTitle className="flex items-center gap-2">
                       <Radio className="h-5 w-5 text-primary" />
-                      À propos de RCVMA
+                      À propos d'OREDY MEDIA
                     </SheetTitle>
                   </SheetHeader>
                   <div className="mt-6 space-y-8">
@@ -196,7 +196,7 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
                         Notre Mission
                       </h3>
                       <p className="text-muted-foreground leading-relaxed">
-                        RCVMA est une radio communautaire dédiée à l'information, l'éducation et le divertissement 
+                        OREDY MEDIA est une radio communautaire dédiée à l'information, l'éducation et le divertissement 
                         de nos auditeurs. Nous nous engageons à promouvoir les valeurs de la communauté, à donner 
                         une voix aux sans-voix et à contribuer au développement social et culturel de notre région.
                       </p>
@@ -242,7 +242,7 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
                     <section className="bg-card border border-border rounded-lg p-4">
                       <h3 className="text-xl font-bold mb-3 text-foreground">Notre Histoire</h3>
                       <p className="text-muted-foreground leading-relaxed">
-                        Fondée en 2015, RCVMA est née de la volonté de créer un espace médiatique au service de la 
+                        Fondée en 2015, OREDY MEDIA est née de la volonté de créer un espace médiatique au service de la 
                         communauté. Au fil des années, nous avons grandi et évolué, tout en restant fidèles à notre 
                         mission première : être la voix de notre communauté et contribuer à son épanouissement.
                       </p>
@@ -265,9 +265,9 @@ const Header = ({ categories = [], selectedCategory = null, onCategorySelect }: 
                   <div className="mt-6 space-y-4">
                     <div className="flex items-center gap-3">
                       <Mail className="h-5 w-5 text-primary" />
-                      <a href="mailto:contact@rcvma.org" className="text-foreground hover:text-primary">
-                        contact@rcvma.org
-                      </a>
+                       <a href="mailto:contact@oredymedia.org" className="text-foreground hover:text-primary">
+                        contact@oredymedia.org
+                       </a>
                     </div>
                     <div className="flex items-center gap-3">
                       <Phone className="h-5 w-5 text-primary" />

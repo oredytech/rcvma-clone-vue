@@ -70,7 +70,7 @@ const RadioPlayer = () => {
               <Radio className="h-5 w-5 text-primary" />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="font-semibold text-sm truncate">RCVMA Radio</p>
+              <p className="font-semibold text-sm truncate">OREDY MEDIA Radio</p>
               <p className="text-xs text-slate-400 truncate">En direct</p>
             </div>
           </div>

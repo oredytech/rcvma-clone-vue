@@ -15,7 +15,7 @@ const LiveTV = () => {
               <Tv className="h-8 w-8 text-primary" />
               <h1 className="text-3xl font-bold">TV en Direct</h1>
             </div>
-            <p className="text-muted-foreground">Regardez RCVMA TV en direct</p>
+            <p className="text-muted-foreground">Regardez OREDY MEDIA TV en direct</p>
           </div>
 
           <Card>
@@ -44,9 +44,9 @@ const LiveTV = () => {
 
           <Card>
             <CardContent className="p-6">
-              <h2 className="text-xl font-semibold mb-4">À propos de RCVMA TV</h2>
+              <h2 className="text-xl font-semibold mb-4">À propos d'OREDY MEDIA TV</h2>
               <p className="text-muted-foreground">
-                Retrouvez en direct toute la programmation de RCVMA TV. 
+                Retrouvez en direct toute la programmation d'OREDY MEDIA TV.
                 Des émissions d'actualité, culturelles, éducatives et de divertissement 
                 pour rester informé et connecté avec votre communauté.
               </p>

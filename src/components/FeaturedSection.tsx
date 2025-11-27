@@ -42,7 +42,7 @@ const FeaturedSection = ({
                     <div className="flex items-center gap-3 text-xs text-white/90">
                       <div className="flex items-center gap-1">
                         <User className="h-3 w-3" />
-                        <span>Rédaction RCVMA</span>
+                        <span>Rédaction OREDY MEDIA</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />

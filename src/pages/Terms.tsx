@@ -31,7 +31,7 @@ const Terms = () => {
                 Acceptation des conditions
               </h2>
               <p className="text-muted-foreground">
-                En accédant et en utilisant le site web de RCVMA, vous acceptez d'être lié par ces conditions d'utilisation. 
+                En accédant et en utilisant le site web d'OREDY MEDIA, vous acceptez d'être lié par ces conditions d'utilisation. 
                 Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser notre site.
               </p>
             </section>
@@ -40,7 +40,7 @@ const Terms = () => {
               <h2 className="text-2xl font-bold text-foreground mb-4">Propriété intellectuelle</h2>
               <p className="text-muted-foreground">
                 Tout le contenu présent sur ce site, y compris les textes, images, logos, et enregistrements audio, 
-                est la propriété de RCVMA ou de ses fournisseurs de contenu et est protégé par les lois sur la 
+                est la propriété d'OREDY MEDIA ou de ses fournisseurs de contenu et est protégé par les lois sur la 
                 propriété intellectuelle.
               </p>
             </section>
@@ -93,7 +93,7 @@ const Terms = () => {
             <section className="bg-card border border-border rounded-lg p-6">
               <h2 className="text-2xl font-bold text-foreground mb-4">Limitation de responsabilité</h2>
               <p className="text-muted-foreground">
-                RCVMA ne peut être tenu responsable des dommages directs ou indirects résultant de l'utilisation 
+                OREDY MEDIA ne peut être tenu responsable des dommages directs ou indirects résultant de l'utilisation 
                 ou de l'impossibilité d'utiliser ce site web.
               </p>
             </section>
@@ -101,7 +101,7 @@ const Terms = () => {
             <section className="bg-card border border-border rounded-lg p-6">
               <h2 className="text-2xl font-bold text-foreground mb-4">Modifications</h2>
               <p className="text-muted-foreground">
-                RCVMA se réserve le droit de modifier ces conditions d'utilisation à tout moment. 
+                OREDY MEDIA se réserve le droit de modifier ces conditions d'utilisation à tout moment. 
                 Les modifications entreront en vigueur dès leur publication sur le site.
               </p>
             </section>
@@ -111,7 +111,7 @@ const Terms = () => {
               <p className="text-muted-foreground">
                 Pour toute question concernant ces conditions d'utilisation, veuillez nous contacter à:
                 <br />
-                <a href="mailto:legal@rcvma.org" className="text-primary hover:underline">legal@rcvma.org</a>
+                <a href="mailto:legal@oredymedia.org" className="text-primary hover:underline">legal@oredymedia.org</a>
               </p>
             </section>
           </div>
