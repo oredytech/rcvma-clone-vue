@@ -16,7 +16,7 @@ import Terms from "./pages/Terms";
 import LiveTV from "./pages/LiveTV";
 import Podcasts from "./pages/Podcasts";
 import NotFound from "./pages/NotFound";
-import RadioPlayer from "./components/RadioPlayer";
+import MediaPlayer from "./components/MediaPlayer";
 import CookieBanner from "./components/CookieBanner";
 
 const queryClient = new QueryClient();
@@ -43,7 +43,7 @@ const App = () => (
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
-        <RadioPlayer />
+        <MediaPlayer />
         <CookieBanner />
       </BrowserRouter>
     </TooltipProvider>

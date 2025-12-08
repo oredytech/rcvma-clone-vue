@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Play, Radio, Search, Info, Mail, Menu, Home, Users, Calendar, Facebook, Instagram, Twitter, Youtube, Settings, Shield, FileText, Phone, Tv, Target, Heart, Podcast } from "lucide-react";
+import { Play, Radio, Search, Info, Mail, Menu, Home, Users, Calendar, Facebook, Twitter, Youtube, Settings, Shield, FileText, Phone, Tv, Target, Heart, Podcast } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -9,14 +9,16 @@ import CategoryBar from "@/components/CategoryBar";
 import DateTimeDisplay from "@/components/DateTimeDisplay";
 import BreakingNews from "@/components/BreakingNews";
 import { useState } from "react";
-import { useRadioPlayer } from "@/hooks/useRadioPlayer";
+import { useMediaPlayer } from "@/hooks/useMediaPlayer";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
 import CookieSettings from "@/components/CookieSettings";
+
 interface HeaderProps {
   categories?: WordPressCategory[];
   selectedCategory?: number | null;
   onCategorySelect?: (categoryId: number | null) => void;
 }
+
 const Header = ({
   categories = [],
   selectedCategory = null,
@@ -25,18 +27,13 @@ const Header = ({
   const isMobile = useIsMobile();
   const [isCategoriesOpen, setIsCategoriesOpen] = useState<string | null>(null);
   const [showCookieSettings, setShowCookieSettings] = useState(false);
-  const {
-    isVisible: isPlayerVisible,
-    setIsVisible,
-    togglePlay
-  } = useRadioPlayer();
+  const { switchToRadio } = useMediaPlayer();
   const scrollDirection = useScrollDirection();
+
   const handleLiveClick = () => {
-    if (isMobile) {
-      setIsVisible(true);
-      togglePlay();
-    }
+    switchToRadio();
   };
+
   return <>
       {/* Barre d'heure/date mobile en haut */}
       {isMobile && <div className={`
@@ -97,7 +94,7 @@ const Header = ({
           <Link to="/" className="flex items-center gap-2">
             <Radio className="h-5 w-5" />
             <div>
-              <h1 className="text-sm font-bold tracking-tight">OREDY MEDIA</h1>
+              <h1 className="text-sm font-bold tracking-tight">PANA RADIO</h1>
             </div>
           </Link>
           
@@ -125,7 +122,7 @@ const Header = ({
 
       {/* Menu mobile en bas */}
       {isMobile && <>
-          <nav className={`fixed bottom-0 left-0 right-0 bg-primary text-primary-foreground z-50 pb-safe ${!isPlayerVisible ? 'rounded-tl-[8px] rounded-tr-[8px]' : ''}`}>
+          <nav className="fixed bottom-0 left-0 right-0 bg-primary text-primary-foreground z-50 pb-safe rounded-tl-[8px] rounded-tr-[8px]">
             <div className="flex items-center justify-around h-[63px]">
               <Link to="/" className="flex flex-col items-center gap-1 px-3 py-2 hover:bg-white/10 rounded transition-colors">
                 <Home className="h-5 w-5" />
@@ -147,14 +144,14 @@ const Header = ({
                 <SheetContent side="bottom" className="h-[85vh] overflow-y-auto rounded-tl-[12px] rounded-tr-[12px] border-t border-l border-r border-border">
                   <SheetHeader>
                     <SheetTitle className="flex items-center gap-2">
-                      <Radio className="h-5 w-5 text-primary" />
-                      À propos d'OREDY MEDIA
+                      <Radio className="h-6 w-6 text-primary" />
+                      À propos de PANA RADIO
                     </SheetTitle>
                   </SheetHeader>
                   <div className="mt-6 space-y-8">
                     <div className="text-center">
                       <p className="text-lg text-muted-foreground">
-                        Radio Communautaire de la Vie Meilleure en Action
+                        Radio Panafricaine basée à Goma, RDC
                       </p>
                     </div>
 
@@ -164,55 +161,33 @@ const Header = ({
                         Notre Mission
                       </h3>
                       <p className="text-muted-foreground leading-relaxed">
-                        OREDY MEDIA est une radio communautaire dédiée à l'information, l'éducation et le divertissement 
-                        de nos auditeurs. Nous nous engageons à promouvoir les valeurs de la communauté, à donner 
-                        une voix aux sans-voix et à contribuer au développement social et culturel de notre région.
+                        PANA RADIO est une radio panafricaine fondée par Oredy MUSANDA avec des jeunes Africains, 
+                        notamment les TCR d'Afrique francophone, certifiés par la bourse Claude VERLON et Ghislaine DUPONT 
+                        en 2020-2021. Nous promouvons la paix, l'unité des peuples africains, ainsi que la sensibilisation 
+                        à l'environnement et à la santé.
                       </p>
                     </section>
 
                     <section>
                       <h3 className="text-xl font-bold mb-3 text-foreground flex items-center gap-2">
                         <Heart className="h-5 w-5 text-primary" />
-                        Nos Valeurs
+                        Nos Langues
                       </h3>
-                      <ul className="space-y-3 text-muted-foreground">
-                        <li className="flex items-start gap-2">
-                          <span className="text-primary font-bold">•</span>
-                          <span><strong>Intégrité :</strong> Nous nous engageons à diffuser des informations vérifiées et véridiques</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-primary font-bold">•</span>
-                          <span><strong>Communauté :</strong> Nous plaçons les besoins de notre communauté au cœur de nos préoccupations</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-primary font-bold">•</span>
-                          <span><strong>Excellence :</strong> Nous visons l'excellence dans tous nos programmes et services</span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-primary font-bold">•</span>
-                          <span><strong>Innovation :</strong> Nous adoptons les nouvelles technologies pour mieux servir nos auditeurs</span>
-                        </li>
-                      </ul>
+                      <p className="text-muted-foreground leading-relaxed">
+                        Nous diffusons des émissions en swahili, wolof, lingala, français et anglais, 
+                        pour toucher un large public à travers le continent africain.
+                      </p>
                     </section>
 
                     <section>
                       <h3 className="text-xl font-bold mb-3 text-foreground flex items-center gap-2">
                         <Users className="h-5 w-5 text-primary" />
-                        Notre Équipe
+                        Notre Programmation
                       </h3>
                       <p className="text-muted-foreground leading-relaxed">
-                        Notre équipe est composée de professionnels passionnés et dévoués qui travaillent sans relâche 
-                        pour vous apporter le meilleur contenu radiophonique. Journalistes, animateurs, techniciens et 
-                        producteurs collaborent pour créer des programmes de qualité qui informent, éduquent et divertissent.
-                      </p>
-                    </section>
-
-                    <section className="bg-card border border-border rounded-lg p-4">
-                      <h3 className="text-xl font-bold mb-3 text-foreground">Notre Histoire</h3>
-                      <p className="text-muted-foreground leading-relaxed">
-                        Fondée en 2015, OREDY MEDIA est née de la volonté de créer un espace médiatique au service de la 
-                        communauté. Au fil des années, nous avons grandi et évolué, tout en restant fidèles à notre 
-                        mission première : être la voix de notre communauté et contribuer à son épanouissement.
+                        Notre programmation inclut des contenus sur la science, la technologie, la culture, 
+                        la musique, et des messages d'amour et de solidarité en faveur d'un développement 
+                        durable et d'une Afrique unie.
                       </p>
                     </section>
                   </div>
@@ -233,14 +208,14 @@ const Header = ({
                   <div className="mt-6 space-y-4">
                     <div className="flex items-center gap-3">
                       <Mail className="h-5 w-5 text-primary" />
-                       <a href="mailto:contact@oredymedia.org" className="text-foreground hover:text-primary">
-                        contact@oredymedia.org
+                       <a href="mailto:contact@panaradio.net" className="text-foreground hover:text-primary">
+                        contact@panaradio.net
                        </a>
                     </div>
                     <div className="flex items-center gap-3">
                       <Phone className="h-5 w-5 text-primary" />
-                      <a href="tel:+243123456789" className="text-foreground hover:text-primary">
-                        +243 123 456 789
+                      <a href="tel:+243996886079" className="text-foreground hover:text-primary">
+                        +243 996 886 079
                       </a>
                     </div>
                   </div>
@@ -292,16 +267,13 @@ const Header = ({
                     <div>
                       <h3 className="font-bold text-lg mb-3 text-foreground">Suivez-nous</h3>
                       <div className="flex gap-4">
-                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="bg-card border border-border p-3 rounded-lg hover:border-primary transition-all">
+                        <a href="https://web.facebook.com/panaradio/" target="_blank" rel="noopener noreferrer" className="bg-card border border-border p-3 rounded-lg hover:border-primary transition-all">
                           <Facebook className="h-6 w-6 text-primary" />
                         </a>
-                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="bg-card border border-border p-3 rounded-lg hover:border-primary transition-all">
-                          <Instagram className="h-6 w-6 text-primary" />
-                        </a>
-                        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="bg-card border border-border p-3 rounded-lg hover:border-primary transition-all">
+                        <a href="https://x.com/Panaradio10" target="_blank" rel="noopener noreferrer" className="bg-card border border-border p-3 rounded-lg hover:border-primary transition-all">
                           <Twitter className="h-6 w-6 text-primary" />
                         </a>
-                        <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="bg-card border border-border p-3 rounded-lg hover:border-primary transition-all">
+                        <a href="https://www.youtube.com/@PanaRadio-qr4dv" target="_blank" rel="noopener noreferrer" className="bg-card border border-border p-3 rounded-lg hover:border-primary transition-all">
                           <Youtube className="h-6 w-6 text-primary" />
                         </a>
                       </div>
