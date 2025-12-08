@@ -59,8 +59,8 @@ const Contact = () => {
                     <div>
                       <h3 className="font-semibold text-foreground mb-1">Adresse</h3>
                       <p className="text-muted-foreground">
-                        Avenue de la Radio<br />
-                        Kinshasa, RDC
+                        Ville de Goma<br />
+                        Nord-Kivu, RDC
                       </p>
                     </div>
                   </div>
@@ -71,8 +71,8 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-foreground mb-1">Téléphone</h3>
-                      <a href="tel:+243123456789" className="text-muted-foreground hover:text-primary transition-colors">
-                        +243 123 456 789
+                      <a href="tel:+243996886079" className="text-muted-foreground hover:text-primary transition-colors">
+                        +243 996 886 079
                       </a>
                     </div>
                   </div>
@@ -83,8 +83,8 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-foreground mb-1">Email</h3>
-                      <a href="mailto:contact@oredymedia.org" className="text-muted-foreground hover:text-primary transition-colors">
-                        contact@oredymedia.org
+                      <a href="mailto:contact@panaradio.net" className="text-muted-foreground hover:text-primary transition-colors">
+                        contact@panaradio.net
                       </a>
                     </div>
                   </div>
