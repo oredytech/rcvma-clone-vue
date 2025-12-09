@@ -63,6 +63,22 @@ export async function fetchPostBySlug(slug: string): Promise<WordPressPost | nul
   }
 }
 
+// Recherche d'articles via l'API REST WordPress
+export async function searchPosts(query: string, perPage = 50): Promise<WordPressPost[]> {
+  if (!query.trim()) return [];
+  
+  try {
+    const response = await fetch(
+      `${WP_API_BASE}/posts?_embed&per_page=${perPage}&search=${encodeURIComponent(query)}&orderby=relevance`
+    );
+    if (!response.ok) throw new Error('Failed to search posts');
+    return await response.json();
+  } catch (error) {
+    console.error('Error searching posts:', error);
+    return [];
+  }
+}
+
 export async function fetchCategories(): Promise<WordPressCategory[]> {
   try {
     const response = await fetch(`${WP_API_BASE}/categories?per_page=100&orderby=count&order=desc`);
@@ -71,6 +87,29 @@ export async function fetchCategories(): Promise<WordPressCategory[]> {
   } catch (error) {
     console.error('Error fetching categories:', error);
     return [];
+  }
+}
+
+// Gestion des vues d'articles (localStorage)
+const VIEW_COUNT_KEY = 'article_views';
+
+export function getArticleViews(postId: number): number {
+  try {
+    const views = JSON.parse(localStorage.getItem(VIEW_COUNT_KEY) || '{}');
+    return views[postId] || 0;
+  } catch {
+    return 0;
+  }
+}
+
+export function incrementArticleViews(postId: number): number {
+  try {
+    const views = JSON.parse(localStorage.getItem(VIEW_COUNT_KEY) || '{}');
+    views[postId] = (views[postId] || 0) + 1;
+    localStorage.setItem(VIEW_COUNT_KEY, JSON.stringify(views));
+    return views[postId];
+  } catch {
+    return 0;
   }
 }
 

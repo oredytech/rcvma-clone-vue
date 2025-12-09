@@ -1,5 +1,6 @@
-import { Mail, Phone, MapPin, Facebook, Twitter, Youtube, Radio } from "lucide-react";
+import { Mail, Phone, MapPin, Facebook, Twitter, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
+import panaRadioLogo from "@/assets/pana-radio-logo.png";
 
 const Footer = () => {
   return <footer className="bg-slate-900 text-slate-100 border-t border-slate-800 mt-12">
@@ -8,7 +9,7 @@ const Footer = () => {
           {/* About Section */}
           <div>
             <div className="flex items-center gap-3 mb-4">
-              <Radio className="h-8 w-8 text-primary" />
+              <img src={panaRadioLogo} alt="PANA RADIO" className="h-10 w-10 object-contain" />
               <h3 className="text-lg font-bold text-secondary">PANA RADIO</h3>
             </div>
             <p className="text-sm text-muted-foreground">

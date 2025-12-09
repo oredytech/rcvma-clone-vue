@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Play, Radio, Search, Info, Mail, Menu, Home, Users, Calendar, Facebook, Twitter, Youtube, Settings, Shield, FileText, Phone, Tv, Target, Heart, Podcast } from "lucide-react";
+import { Play, Search, Info, Mail, Menu, Home, Users, Calendar, Facebook, Twitter, Youtube, Settings, Shield, FileText, Phone, Tv, Target, Heart, Podcast } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useMediaPlayer } from "@/hooks/useMediaPlayer";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
 import CookieSettings from "@/components/CookieSettings";
+import panaRadioLogo from "@/assets/pana-radio-logo.png";
 
 interface HeaderProps {
   categories?: WordPressCategory[];
@@ -92,7 +93,7 @@ const Header = ({
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-[30px]">
           <Link to="/" className="flex items-center gap-2">
-            <Radio className="h-5 w-5" />
+            <img src={panaRadioLogo} alt="PANA RADIO" className="h-6 w-6 object-contain" />
             <div>
               <h1 className="text-sm font-bold tracking-tight">PANA RADIO</h1>
             </div>
@@ -144,7 +145,7 @@ const Header = ({
                 <SheetContent side="bottom" className="h-[85vh] overflow-y-auto rounded-tl-[12px] rounded-tr-[12px] border-t border-l border-r border-border">
                   <SheetHeader>
                     <SheetTitle className="flex items-center gap-2">
-                      <Radio className="h-6 w-6 text-primary" />
+                      <img src={panaRadioLogo} alt="PANA RADIO" className="h-8 w-8 object-contain" />
                       À propos de PANA RADIO
                     </SheetTitle>
                   </SheetHeader>

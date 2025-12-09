@@ -2,7 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchCategories, WordPressCategory } from "@/lib/wordpress";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Target, Users, Heart, Globe, Radio } from "lucide-react";
+import { Target, Users, Heart, Globe } from "lucide-react";
+import panaRadioLogo from "@/assets/pana-radio-logo.png";
 
 const About = () => {
   const { data: categories = [] } = useQuery<WordPressCategory[]>({
@@ -17,7 +18,7 @@ const About = () => {
       <main className="container mx-auto py-12 px-4 mb-20 md:mb-0">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <Radio className="h-16 w-16 mx-auto mb-4 text-primary" />
+            <img src={panaRadioLogo} alt="PANA RADIO" className="h-20 w-20 mx-auto mb-4 object-contain" />
             <h1 className="text-4xl font-bold mb-4 text-foreground">À propos de PANA RADIO</h1>
             <p className="text-xl text-muted-foreground">
               Radio Panafricaine basée à Goma, RDC
