@@ -160,10 +160,7 @@ const Header = ({
                         Notre Mission
                       </h3>
                       <p className="text-muted-foreground leading-relaxed">
-                        PANA RADIO est une radio panafricaine fondée par Oredy MUSANDA avec des jeunes Africains, 
-                        notamment les TCR d'Afrique francophone, certifiés par la bourse Claude VERLON et Ghislaine DUPONT 
-                        en 2020-2021. Nous promouvons la paix, l'unité des peuples africains, ainsi que la sensibilisation 
-                        à l'environnement et à la santé.
+                        PANA RADIO est une radio panafricaine fondée en 2020 par des jeunes Africains, notamment les TCR (Techniciens Chargés de Reportages) d'Afrique francophone, certifiés par RFI sous la bourse Claude VERLON et Ghislaine DUPONT en 2020-2021. Nous promouvons la paix, l'unité des peuples africains, ainsi que la sensibilisation à l'environnement et à la santé.
                       </p>
                     </section>
 
