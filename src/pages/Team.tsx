@@ -3,15 +3,14 @@ import { fetchCategories, WordPressCategory } from "@/lib/wordpress";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Users, Calendar, FileText } from "lucide-react";
-
 const Team = () => {
-  const { data: categories = [] } = useQuery<WordPressCategory[]>({
+  const {
+    data: categories = []
+  } = useQuery<WordPressCategory[]>({
     queryKey: ['categories'],
     queryFn: fetchCategories
   });
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       <Header categories={categories} />
       
       <main className="container mx-auto py-12 px-4 mb-20 md:mb-0">
@@ -19,9 +18,7 @@ const Team = () => {
           <div className="text-center mb-12">
             <Users className="h-16 w-16 mx-auto mb-4 text-primary" />
             <h1 className="text-4xl font-bold mb-4 text-foreground">Notre Équipe</h1>
-            <p className="text-xl text-muted-foreground">
-              Les professionnels passionnés derrière OREDY MEDIA
-            </p>
+            <p className="text-xl text-muted-foreground">Les professionnels passionnés derrière PANA RADIO</p>
           </div>
 
           <div className="prose prose-lg max-w-none">
@@ -79,8 +76,6 @@ const Team = () => {
       </main>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Team;
