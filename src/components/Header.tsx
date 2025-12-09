@@ -89,7 +89,7 @@ const Header = ({
 
       {/* En-tête principal */}
       <div className="container mx-auto bg-[#ff0000] px-px">
-        <div className="flex items-center justify-between h-[30px]">
+        <div className="flex items-center justify-between h-[30px] px-[16px]">
           <Link to="/" className="flex items-center gap-2">
             <img src={panaRadioLogo} alt="PANA RADIO" className="h-6 w-6 object-contain" />
             <div>
