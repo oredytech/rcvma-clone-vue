@@ -1,7 +1,6 @@
 import { Mail, Phone, MapPin, Facebook, Twitter, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
 import panaRadioLogo from "@/assets/pana-radio-logo.png";
-
 const Footer = () => {
   return <footer className="bg-slate-900 text-slate-100 border-t border-slate-800 mt-12">
       <div className="container mx-auto px-4 py-12 pb-24 md:pb-12">
@@ -63,7 +62,7 @@ const Footer = () => {
         </div>
 
         {/* Copyright */}
-        <div className="border-t border-border mt-8 pt-8 text-center text-sm text-muted-foreground py-[8px]">
+        <div className="border-t border-border mt-8 pt-8 text-center text-sm text-muted-foreground py-[35px]">
           <p>&copy; 2025 PANA RADIO - Tous droits réservés</p>
           <p className="mt-2">
             Fièrement conçu par{" "}
