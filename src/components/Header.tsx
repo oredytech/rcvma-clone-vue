@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Play, Search, Info, Mail, Menu, Home, Users, Calendar, Facebook, Twitter, Youtube, Settings, Shield, FileText, Phone, Tv, Target, Heart, Podcast } from "lucide-react";
+import { Play, Search, Info, Mail, Menu, Home, Users, Calendar, Facebook, Twitter, Youtube, Settings, Shield, FileText, Phone, Tv, Heart, Podcast } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -156,7 +156,7 @@ const Header = ({
 
                     <section>
                       <h3 className="text-xl font-bold mb-3 text-foreground flex items-center gap-2">
-                        <Target className="h-5 w-5 text-primary" />
+                        
                         Notre Mission
                       </h3>
                       <p className="text-muted-foreground leading-relaxed">
