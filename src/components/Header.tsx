@@ -13,13 +13,11 @@ import { useMediaPlayer } from "@/hooks/useMediaPlayer";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
 import CookieSettings from "@/components/CookieSettings";
 import panaRadioLogo from "@/assets/pana-radio-logo.png";
-
 interface HeaderProps {
   categories?: WordPressCategory[];
   selectedCategory?: number | null;
   onCategorySelect?: (categoryId: number | null) => void;
 }
-
 const Header = ({
   categories = [],
   selectedCategory = null,
@@ -28,13 +26,13 @@ const Header = ({
   const isMobile = useIsMobile();
   const [isCategoriesOpen, setIsCategoriesOpen] = useState<string | null>(null);
   const [showCookieSettings, setShowCookieSettings] = useState(false);
-  const { switchToRadio } = useMediaPlayer();
+  const {
+    switchToRadio
+  } = useMediaPlayer();
   const scrollDirection = useScrollDirection();
-
   const handleLiveClick = () => {
     switchToRadio();
   };
-
   return <>
       {/* Barre d'heure/date mobile en haut */}
       {isMobile && <div className={`
@@ -238,7 +236,7 @@ const Header = ({
                   <div className="mt-6 space-y-6">
                     {/* Catégories */}
                     <div>
-                      <h3 className="font-bold text-lg mb-3 text-foreground">Catégories</h3>
+                      <h3 className="font-bold text-lg mb-3 text-foreground">​Thématiques </h3>
                       <div className="grid grid-cols-2 gap-2">
                         {categories.map(category => <Link key={category.id} to={`/categories?category=${category.id}`} onClick={() => {
                       setIsCategoriesOpen(null);
