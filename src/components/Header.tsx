@@ -149,8 +149,8 @@ const Header = ({
                   </SheetHeader>
                   <div className="mt-6 space-y-8">
                     <div className="text-center">
-                      <p className="text-lg text-muted-foreground">
-                        Radio Panafricaine basée à Goma, RDC
+                      <p className="text-accent font-extrabold text-3xl text-center">
+                        Radio Panafricaine 
                       </p>
                     </div>
 
