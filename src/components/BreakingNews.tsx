@@ -13,7 +13,7 @@ const BreakingNews = () => {
   return <div className="bg-destructive text-destructive-foreground overflow-hidden border-t border-white/10">
       <div className="container mx-auto px-4 opacity-100">
         <div className="flex items-center gap-4 h-10 bg-destructive">
-          <div className="flex items-center gap-2 whitespace-nowrap font-bold text-sm bg-accent">
+          <div className="flex items-center gap-2 whitespace-nowrap font-bold text-sm bg-accent px-[10px] py-[10px]">
             <Flame className="h-4 w-4" />
             BREAKING NEWS
           </div>
