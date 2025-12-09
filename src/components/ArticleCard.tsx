@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { Calendar } from "lucide-react";
-import { WordPressPost, formatDate, stripHtml } from "@/lib/wordpress";
+import { Calendar, Eye } from "lucide-react";
+import { WordPressPost, formatDate, stripHtml, getArticleViews } from "@/lib/wordpress";
 import CategoryBadge from "./CategoryBadge";
 import { Button } from "@/components/ui/button";
 
@@ -12,6 +12,7 @@ const ArticleCard = ({ post }: ArticleCardProps) => {
   const featuredImage = post._embedded?.['wp:featuredmedia']?.[0]?.source_url;
   const categories = post._embedded?.['wp:term']?.[0] || [];
   const mainCategory = categories[0];
+  const views = getArticleViews(post.id);
   
   return (
     <article className="bg-card rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col h-full">
@@ -46,14 +47,22 @@ const ArticleCard = ({ post }: ArticleCardProps) => {
         </p>
         
         <div className="flex items-center justify-between mt-auto pt-3 border-t border-border">
-          <div className="flex items-center text-xs text-muted-foreground">
-            <Calendar className="h-3 w-3 mr-1" />
-            <span>{formatDate(post.date)}</span>
+          <div className="flex items-center gap-3 text-xs text-muted-foreground">
+            <span className="flex items-center gap-1">
+              <Calendar className="h-3 w-3" />
+              {formatDate(post.date)}
+            </span>
+            {views > 0 && (
+              <span className="flex items-center gap-1">
+                <Eye className="h-3 w-3" />
+                {views}
+              </span>
+            )}
           </div>
           
           <Link to={`/article/${post.slug}`}>
             <Button size="sm" variant="ghost" className="text-primary hover:text-primary">
-              Lire la Suite
+              Lire
             </Button>
           </Link>
         </div>

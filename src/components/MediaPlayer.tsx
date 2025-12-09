@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useMediaPlayer } from "@/hooks/useMediaPlayer";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
+import panaRadioLogo from "@/assets/pana-radio-logo.png";
 
 const RADIO_STREAM_URL = "https://stream.zeno.fm/qdgq60qkb3gvv";
 
@@ -157,7 +158,7 @@ const MediaPlayer = () => {
             <div className="flex items-center gap-3 flex-1 min-w-0">
               <div className="flex-shrink-0 bg-primary/20 p-2 rounded-lg">
                 {activePlayer === 'radio' ? (
-                  <Radio className="h-5 w-5 text-primary" />
+                  <img src={panaRadioLogo} alt="PANA RADIO" className="h-8 w-8 object-contain" />
                 ) : podcastInfo?.imageUrl ? (
                   <img src={podcastInfo.imageUrl} alt="Podcast" className="h-8 w-8 object-cover rounded" />
                 ) : (

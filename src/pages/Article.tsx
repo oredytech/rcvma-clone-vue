@@ -1,19 +1,20 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { fetchPostBySlug, formatDate, formatWordPressContent, WordPressPost } from "@/lib/wordpress";
+import { fetchPostBySlug, formatDate, formatWordPressContent, WordPressPost, incrementArticleViews, getArticleViews } from "@/lib/wordpress";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CategoryBadge from "@/components/CategoryBadge";
 import ArticleSidebar from "@/components/ArticleSidebar";
 import { Button } from "@/components/ui/button";
-import { Calendar, ArrowLeft, Loader2 } from "lucide-react";
+import { Calendar, ArrowLeft, Loader2, Eye } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const Article = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const [views, setViews] = useState(0);
 
   const { data: post, isLoading, error } = useQuery<WordPressPost | null>({
     queryKey: ['post', slug],
@@ -30,6 +31,14 @@ const Article = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [slug]);
+
+  // Incrémenter les vues lors du chargement de l'article
+  useEffect(() => {
+    if (post?.id) {
+      const newViews = incrementArticleViews(post.id);
+      setViews(newViews);
+    }
+  }, [post?.id]);
 
   if (isLoading) {
     return (
@@ -91,9 +100,15 @@ const Article = () => {
                   dangerouslySetInnerHTML={{ __html: post.title.rendered }}
                 />
 
-                <div className="flex items-center text-muted-foreground mb-8 pb-6 border-b border-border">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  <span className="text-sm">{formatDate(post.date)}</span>
+                <div className="flex items-center gap-4 text-muted-foreground mb-8 pb-6 border-b border-border">
+                  <div className="flex items-center">
+                    <Calendar className="h-4 w-4 mr-2" />
+                    <span className="text-sm">{formatDate(post.date)}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Eye className="h-4 w-4 mr-2" />
+                    <span className="text-sm">{views} vue{views !== 1 ? 's' : ''}</span>
+                  </div>
                 </div>
 
                 <div 
