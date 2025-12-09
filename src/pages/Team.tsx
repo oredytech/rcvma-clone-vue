@@ -22,7 +22,7 @@ const Team = () => {
           </div>
 
           <div className="prose prose-lg max-w-none">
-            <p className="text-muted-foreground leading-relaxed mb-8">
+            <p className="text-muted-foreground leading-relaxed mb-8 text-center">
               Notre équipe est composée de journalistes, animateurs, techniciens et producteurs 
               dévoués qui travaillent ensemble pour vous offrir le meilleur contenu radiophonique.
             </p>
