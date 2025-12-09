@@ -65,8 +65,8 @@ const Header = ({
                       </NavigationMenuLink>
                     </NavigationMenuItem>
                     <NavigationMenuItem>
-                      <NavigationMenuLink href="/categories" className="text-xs px-3 py-1 hover:bg-white/10 rounded transition-colors">
-                        Catégories
+                      <NavigationMenuLink className="text-xs px-3 py-1 hover:bg-white/10 rounded transition-colors" href="/thematiques">
+                        ​Thématiques 
                       </NavigationMenuLink>
                     </NavigationMenuItem>
                     <NavigationMenuItem>
