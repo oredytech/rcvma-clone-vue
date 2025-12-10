@@ -24,9 +24,13 @@ const Article = () => {
 
   useEffect(() => {
     if (error || (!isLoading && !post)) {
-      navigate('/404');
+      // Ne pas rediriger si c'est une route statique
+      const staticRoutes = ['a-propos', 'contacts', 'categories', 'rechercher', 'equipe', 'programme', 'confidentialite', 'conditions', 'tv-direct', 'podcasts'];
+      if (slug && !staticRoutes.includes(slug)) {
+        navigate('/404');
+      }
     }
-  }, [error, isLoading, post, navigate]);
+  }, [error, isLoading, post, navigate, slug]);
 
   useEffect(() => {
     window.scrollTo(0, 0);

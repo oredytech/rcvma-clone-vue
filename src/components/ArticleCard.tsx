@@ -16,7 +16,7 @@ const ArticleCard = ({ post }: ArticleCardProps) => {
   
   return (
     <article className="bg-card rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col h-full">
-      <Link to={`/article/${post.slug}`} className="block relative overflow-hidden group">
+      <Link to={`/${post.slug}`} className="block relative overflow-hidden group">
         {featuredImage ? (
           <img 
             src={featuredImage} 
@@ -36,7 +36,7 @@ const ArticleCard = ({ post }: ArticleCardProps) => {
       </Link>
       
       <div className="p-4 flex-1 flex flex-col">
-        <Link to={`/article/${post.slug}`}>
+        <Link to={`/${post.slug}`}>
           <h3 className="text-lg font-bold mb-2 line-clamp-2 hover:text-primary transition-colors">
             {stripHtml(post.title.rendered)}
           </h3>
@@ -60,7 +60,7 @@ const ArticleCard = ({ post }: ArticleCardProps) => {
             )}
           </div>
           
-          <Link to={`/article/${post.slug}`}>
+          <Link to={`/${post.slug}`}>
             <Button size="sm" variant="ghost" className="text-primary hover:text-primary">
               Lire
             </Button>
