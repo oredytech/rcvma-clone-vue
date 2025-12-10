@@ -178,41 +178,51 @@ const Podcasts = () => {
           <p className="text-muted-foreground mb-8">Découvrez nos derniers épisodes</p>
 
           <ScrollArea className={`${isMobile ? 'h-[60vh]' : 'h-[calc(100vh-350px)]'}`}>
-            <div className="grid gap-4">
+            <div className="grid gap-3 pr-2">
               {episodes.map((episode, index) => (
                 <div 
                   key={index} 
-                  className={`bg-card border border-border rounded-lg p-4 hover:border-primary transition-all cursor-pointer ${isCurrentEpisode(episode) ? 'border-primary bg-primary/5' : ''}`} 
+                  className={`bg-card border border-border rounded-lg p-3 hover:border-primary transition-all cursor-pointer ${isCurrentEpisode(episode) ? 'border-primary bg-primary/5' : ''}`} 
                   onClick={() => playEpisode(episode)}
                 >
-                  <div className="flex gap-4 items-start">
-                    {/* Image à gauche - toujours affichée */}
+                  <div className="flex gap-3 items-center">
+                    {/* Image à gauche */}
                     <img 
                       src={episode.imageUrl || channelImage || panaRadioLogo} 
                       alt={episode.title} 
-                      className="w-20 h-20 rounded-md object-cover flex-shrink-0" 
+                      className={`${isMobile ? 'w-14 h-14' : 'w-20 h-20'} rounded-md object-cover flex-shrink-0`}
                     />
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-bold text-lg mb-2 text-foreground line-clamp-2">{episode.title}</h3>
-                      <p 
-                        className="text-sm text-muted-foreground line-clamp-2 mb-2" 
-                        dangerouslySetInnerHTML={{ __html: episode.description }} 
-                      />
-                      <div className="flex gap-4 text-xs text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <Calendar className="h-3 w-3" />
-                          {new Date(episode.pubDate).toLocaleDateString('fr-FR')}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          {episode.duration}
-                        </span>
-                      </div>
+                    
+                    {/* Titre - sur mobile, uniquement le titre */}
+                    <div className="flex-1 min-w-0 overflow-hidden">
+                      <h3 className={`font-bold text-foreground ${isMobile ? 'text-sm line-clamp-2' : 'text-lg line-clamp-2 mb-2'}`}>{episode.title}</h3>
+                      
+                      {/* Description et métadonnées - masquées sur mobile */}
+                      {!isMobile && (
+                        <>
+                          <p 
+                            className="text-sm text-muted-foreground line-clamp-2 mb-2" 
+                            dangerouslySetInnerHTML={{ __html: episode.description }} 
+                          />
+                          <div className="flex gap-4 text-xs text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <Calendar className="h-3 w-3" />
+                              {new Date(episode.pubDate).toLocaleDateString('fr-FR')}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              {episode.duration}
+                            </span>
+                          </div>
+                        </>
+                      )}
                     </div>
+                    
+                    {/* Bouton play rond rouge sur mobile */}
                     <Button 
                       size="icon" 
                       variant={isCurrentEpisode(episode) && isPlaying ? "default" : "outline"} 
-                      className="flex-shrink-0"
+                      className={`flex-shrink-0 ${isMobile ? 'h-10 w-10 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground border-none' : ''}`}
                       onClick={e => {
                         e.stopPropagation();
                         if (isCurrentEpisode(episode)) {
@@ -222,7 +232,7 @@ const Podcasts = () => {
                         }
                       }}
                     >
-                      {isCurrentEpisode(episode) && isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
+                      {isCurrentEpisode(episode) && isPlaying ? <Pause className={`${isMobile ? 'h-4 w-4' : 'h-5 w-5'}`} /> : <Play className={`${isMobile ? 'h-4 w-4' : 'h-5 w-5'}`} />}
                     </Button>
                   </div>
                 </div>
