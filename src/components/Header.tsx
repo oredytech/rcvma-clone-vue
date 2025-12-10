@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Play, Search, Info, Mail, Menu, Home, Users, Calendar, Facebook, Twitter, Youtube, Settings, Shield, FileText, Phone, Tv, Podcast } from "lucide-react";
+import { Play, Search, Info, Mail, Menu, Home, Users, Calendar, Facebook, Twitter, Youtube, Settings, Shield, FileText, Phone, Tv, Podcast, MapPin, Clock, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -13,6 +13,10 @@ import { useMediaPlayer } from "@/hooks/useMediaPlayer";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
 import CookieSettings from "@/components/CookieSettings";
 import panaRadioLogo from "@/assets/pana-radio-logo.png";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
+import { ScrollArea } from "@/components/ui/scroll-area";
 interface HeaderProps {
   categories?: WordPressCategory[];
   selectedCategory?: number | null;
@@ -26,12 +30,28 @@ const Header = ({
   const isMobile = useIsMobile();
   const [isCategoriesOpen, setIsCategoriesOpen] = useState<string | null>(null);
   const [showCookieSettings, setShowCookieSettings] = useState(false);
+  const { toast } = useToast();
+  const [contactForm, setContactForm] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: ""
+  });
   const {
     switchToRadio
   } = useMediaPlayer();
   const scrollDirection = useScrollDirection();
   const handleLiveClick = () => {
     switchToRadio();
+  };
+  const handleContactSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast({
+      title: "Message envoyé !",
+      description: "Nous vous répondrons dans les plus brefs délais.",
+    });
+    setContactForm({ name: "", email: "", subject: "", message: "" });
+    setIsCategoriesOpen(null);
   };
   return <>
       {/* Barre d'heure/date mobile en haut */}
@@ -197,24 +217,105 @@ const Header = ({
                     <span className="text-[10px]">Contacts</span>
                   </button>
                 </SheetTrigger>
-                <SheetContent side="bottom" className="h-[85vh] overflow-y-auto rounded-tl-[12px] rounded-tr-[12px] border-t border-l border-r border-border">
-                  <SheetHeader>
-                    <SheetTitle>Contacts</SheetTitle>
-                  </SheetHeader>
-                  <div className="mt-6 space-y-4">
-                    <div className="flex items-center gap-3">
-                      <Mail className="h-5 w-5 text-primary" />
-                       <a href="mailto:contact@panaradio.net" className="text-foreground hover:text-primary">
-                        contact@panaradio.net
-                       </a>
+                <SheetContent side="bottom" className="h-[85vh] rounded-tl-[12px] rounded-tr-[12px] border-t border-l border-r border-border p-0">
+                  <ScrollArea className="h-full">
+                    <div className="p-6">
+                      <SheetHeader>
+                        <SheetTitle>Contactez-nous</SheetTitle>
+                      </SheetHeader>
+                      
+                      {/* Coordonnées */}
+                      <div className="mt-6 space-y-4">
+                        <h3 className="font-bold text-foreground">Nos Coordonnées</h3>
+                        
+                        <div className="flex items-start gap-3">
+                          <div className="bg-primary/10 p-2 rounded-lg">
+                            <MapPin className="h-4 w-4 text-primary" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-sm text-foreground">Adresse</p>
+                            <p className="text-sm text-muted-foreground">Ville de Goma, Nord-Kivu, RDC</p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-start gap-3">
+                          <div className="bg-primary/10 p-2 rounded-lg">
+                            <Phone className="h-4 w-4 text-primary" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-sm text-foreground">Téléphone</p>
+                            <a href="tel:+243996886079" className="text-sm text-muted-foreground hover:text-primary">
+                              +243 996 886 079
+                            </a>
+                          </div>
+                        </div>
+
+                        <div className="flex items-start gap-3">
+                          <div className="bg-primary/10 p-2 rounded-lg">
+                            <Mail className="h-4 w-4 text-primary" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-sm text-foreground">Email</p>
+                            <a href="mailto:contact@panaradio.net" className="text-sm text-muted-foreground hover:text-primary">
+                              contact@panaradio.net
+                            </a>
+                          </div>
+                        </div>
+
+                        <div className="flex items-start gap-3">
+                          <div className="bg-primary/10 p-2 rounded-lg">
+                            <Clock className="h-4 w-4 text-primary" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-sm text-foreground">Horaires</p>
+                            <p className="text-sm text-muted-foreground">
+                              Lun - Ven: 8h00 - 18h00<br />
+                              Sam: 9h00 - 14h00
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Formulaire de contact */}
+                      <div className="mt-6">
+                        <h3 className="font-bold text-foreground mb-4">Envoyez-nous un message</h3>
+                        <form onSubmit={handleContactSubmit} className="space-y-3">
+                          <Input
+                            type="text"
+                            value={contactForm.name}
+                            onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                            required
+                            placeholder="Votre nom"
+                          />
+                          <Input
+                            type="email"
+                            value={contactForm.email}
+                            onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                            required
+                            placeholder="votre@email.com"
+                          />
+                          <Input
+                            type="text"
+                            value={contactForm.subject}
+                            onChange={(e) => setContactForm({ ...contactForm, subject: e.target.value })}
+                            required
+                            placeholder="Sujet"
+                          />
+                          <Textarea
+                            value={contactForm.message}
+                            onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                            required
+                            placeholder="Votre message..."
+                            rows={4}
+                          />
+                          <Button type="submit" className="w-full">
+                            <Send className="h-4 w-4 mr-2" />
+                            Envoyer
+                          </Button>
+                        </form>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <Phone className="h-5 w-5 text-primary" />
-                      <a href="tel:+243996886079" className="text-foreground hover:text-primary">
-                        +243 996 886 079
-                      </a>
-                    </div>
-                  </div>
+                  </ScrollArea>
                 </SheetContent>
               </Sheet>
               
