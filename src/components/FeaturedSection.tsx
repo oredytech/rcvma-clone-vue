@@ -23,7 +23,7 @@ const FeaturedSection = ({
           {smallPosts.map(post => {
           const featuredImage = post._embedded?.['wp:featuredmedia']?.[0]?.source_url;
           const category = post._embedded?.['wp:term']?.[0]?.[0];
-          return <Link key={post.id} to={`/article/${post.slug}`} className="group relative overflow-hidden rounded-lg h-[290px] block">
+          return <Link key={post.id} to={`/${post.slug}`} className="group relative overflow-hidden rounded-lg h-[290px] block">
                 <div className="absolute inset-0">
                   {featuredImage ? <img src={featuredImage} alt={stripHtml(post.title.rendered)} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" /> : <div className="w-full h-full bg-muted" />}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
@@ -42,7 +42,7 @@ const FeaturedSection = ({
                     <div className="flex items-center gap-3 text-xs text-white/90">
                       <div className="flex items-center gap-1">
                         <User className="h-3 w-3" />
-                        <span>Rédaction OREDY MEDIA</span>
+                        <span>Rédaction PANA RADIO</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
@@ -58,7 +58,7 @@ const FeaturedSection = ({
         {/* Right side - 1 large featured article with slider */}
         <div className="relative overflow-hidden rounded-lg h-[290px] sm:h-[600px] order-1 lg:order-2">
           {/* Background image */}
-          <Link to={`/article/${latestPost.slug}`} className="absolute inset-0 group">
+          <Link to={`/${latestPost.slug}`} className="absolute inset-0 group">
             {latestPostImage ? <img src={latestPostImage} alt={stripHtml(latestPost.title.rendered)} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" /> : <div className="w-full h-full bg-muted" />}
             <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
           </Link>
@@ -76,7 +76,7 @@ const FeaturedSection = ({
                 {posts.slice(0, 5).map(post => {
                 const featuredImage = post._embedded?.['wp:featuredmedia']?.[0]?.source_url;
                 return <CarouselItem key={post.id}>
-                      <Link to={`/article/${post.slug}`} className="flex items-center gap-3 p-3 bg-black/60 backdrop-blur-sm hover:bg-black/70 transition-colors group">
+                      <Link to={`/${post.slug}`} className="flex items-center gap-3 p-3 bg-black/60 backdrop-blur-sm hover:bg-black/70 transition-colors group">
                         <div className="flex-shrink-0 w-20 h-20 rounded-md overflow-hidden bg-muted">
                           {featuredImage ? <img src={featuredImage} alt={stripHtml(post.title.rendered)} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" /> : <div className="w-full h-full bg-muted" />}
                         </div>
@@ -97,13 +97,13 @@ const FeaturedSection = ({
               </div>}
 
             <div className="pointer-events-auto">
-              <Link to={`/article/${latestPost.slug}`}>
+              <Link to={`/${latestPost.slug}`}>
                 <h2 className="text-white font-bold text-2xl lg:text-3xl mb-4 line-clamp-3">
                   {stripHtml(latestPost.title.rendered)}
                 </h2>
               </Link>
               
-              <Link to={`/article/${latestPost.slug}`}>
+              <Link to={`/${latestPost.slug}`}>
                 <Button className="bg-primary hover:bg-primary/90 text-white">
                   Lire la suite
                 </Button>

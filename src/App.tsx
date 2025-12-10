@@ -29,7 +29,6 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/article/:slug" element={<Article />} />
           <Route path="/a-propos" element={<About />} />
           <Route path="/contacts" element={<Contact />} />
           <Route path="/categories" element={<Categories />} />
@@ -40,8 +39,8 @@ const App = () => (
           <Route path="/conditions" element={<Terms />} />
           <Route path="/tv-direct" element={<LiveTV />} />
           <Route path="/podcasts" element={<Podcasts />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
+          {/* Route dynamique pour les articles - doit être en dernier */}
+          <Route path="/:slug" element={<Article />} />
         </Routes>
         <MediaPlayer />
         <CookieBanner />

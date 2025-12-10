@@ -140,7 +140,7 @@ const ArticleSidebar = ({ currentPostId }: ArticleSidebarProps) => {
               return (
                 <Link
                   key={post.id}
-                  to={`/article/${post.slug}`}
+                  to={`/${post.slug}`}
                   className="flex gap-3 group"
                 >
                   {featuredImage && (

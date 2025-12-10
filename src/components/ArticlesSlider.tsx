@@ -38,7 +38,7 @@ const ArticlesSlider = ({ posts }: ArticlesSliderProps) => {
             return (
               <CarouselItem key={post.id} className="md:basis-1/2 lg:basis-1/3">
                 <Link 
-                  to={`/article/${post.slug}`}
+                  to={`/${post.slug}`}
                   className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors group"
                 >
                   <div className="flex-shrink-0 w-20 h-20 rounded-md overflow-hidden bg-muted">
