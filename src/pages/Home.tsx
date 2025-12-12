@@ -7,7 +7,9 @@ import Footer from "@/components/Footer";
 import CategorySection from "@/components/CategorySection";
 import FeaturedSection from "@/components/FeaturedSection";
 import ArticlesSlider from "@/components/ArticlesSlider";
+import SEOHead from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
+
 const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
@@ -46,6 +48,7 @@ const Home = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   return <div className="min-h-screen bg-background">
+      <SEOHead />
       <Header categories={categories} selectedCategory={selectedCategory} onCategorySelect={handleCategorySelect} />
       
       <main className="container mx-auto py-0 px-[7px]">

@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CategoryBadge from "@/components/CategoryBadge";
 import ArticleSidebar from "@/components/ArticleSidebar";
+import SEOHead from "@/components/SEOHead";
 import { Button } from "@/components/ui/button";
 import { Calendar, ArrowLeft, Loader2, Eye } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -61,9 +62,16 @@ const Article = () => {
 
   const featuredImage = post._embedded?.['wp:featuredmedia']?.[0]?.source_url;
   const categories = post._embedded?.['wp:term']?.[0] || [];
+  const plainDescription = post.excerpt?.rendered?.replace(/<[^>]*>/g, '').substring(0, 160) || "";
 
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead 
+        title={`${post.title.rendered.replace(/<[^>]*>/g, '')} - PANA RADIO`}
+        description={plainDescription}
+        image={featuredImage || "https://panaradio.net/wp-content/uploads/2024/02/cropped-PANA-RADIO-5-1.png"}
+        type="article"
+      />
       <Header />
       
       <main className="container mx-auto px-4 py-8">
