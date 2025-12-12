@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, ChevronDown, Clock, Calendar, Shuffle, Repeat, ListMusic, Share2 } from "lucide-react";
+import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, ChevronDown, Clock, Calendar, Shuffle, Repeat, ListMusic, Share2, Radio } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useMediaPlayer } from "@/hooks/useMediaPlayer";
+import SEOHead from "@/components/SEOHead";
 import panaRadioLogo from "@/assets/pana-radio-logo.png";
 
 interface PodcastEpisode {
@@ -102,11 +103,13 @@ const PodcastPlayer = () => {
     fetchPodcasts();
   }, [slug]);
 
-  // Audio setup
+  // Audio setup and autoplay when episode changes
   useEffect(() => {
     if (audioRef.current && currentEpisode) {
       audioRef.current.src = currentEpisode.audioUrl;
       audioRef.current.load();
+      // Autoplay when episode is loaded
+      audioRef.current.play().catch(err => console.error("Erreur lecture auto:", err));
     }
   }, [currentEpisode]);
 
@@ -253,14 +256,23 @@ const PodcastPlayer = () => {
   if (isMobile) {
     return (
       <div className="fixed inset-0 z-50 bg-gradient-to-b from-primary/20 via-background to-background flex flex-col">
+        <SEOHead 
+          title={`${currentEpisode.title} - PANA RADIO Podcast`}
+          description={currentEpisode.description?.replace(/<[^>]*>/g, '').substring(0, 160)}
+          image={currentEpisode.imageUrl || channelImage || panaRadioLogo}
+          type="music.song"
+        />
         <audio ref={audioRef} preload="metadata" />
         
-        {/* Header */}
+        {/* Header with Logo */}
         <div className="flex items-center justify-between p-4">
           <Button variant="ghost" size="icon" onClick={handleClose}>
             <ChevronDown className="h-6 w-6" />
           </Button>
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Lecture en cours</span>
+          <div className="flex items-center gap-2">
+            <img src={panaRadioLogo} alt="PANA RADIO" className="h-6 w-6 rounded" />
+            <span className="text-xs font-bold text-primary uppercase tracking-wider">PANA RADIO</span>
+          </div>
           <Button variant="ghost" size="icon">
             <Share2 className="h-5 w-5" />
           </Button>
@@ -415,14 +427,29 @@ const PodcastPlayer = () => {
   // Desktop Spotify-like Player
   return (
     <div className="min-h-screen bg-gradient-to-b from-primary/10 via-background to-background">
+      <SEOHead 
+        title={`${currentEpisode.title} - PANA RADIO Podcast`}
+        description={currentEpisode.description?.replace(/<[^>]*>/g, '').substring(0, 160)}
+        image={currentEpisode.imageUrl || channelImage || panaRadioLogo}
+        type="music.song"
+      />
       <audio ref={audioRef} preload="metadata" />
       
       <div className="container mx-auto px-4 py-8">
-        {/* Back button */}
-        <Button variant="ghost" onClick={handleClose} className="mb-6">
-          <ChevronDown className="h-4 w-4 mr-2 rotate-90" />
-          Retour aux podcasts
-        </Button>
+        {/* Header with Logo */}
+        <div className="flex items-center justify-between mb-6">
+          <Button variant="ghost" onClick={handleClose}>
+            <ChevronDown className="h-4 w-4 mr-2 rotate-90" />
+            Retour aux podcasts
+          </Button>
+          <div className="flex items-center gap-3 bg-card/50 px-4 py-2 rounded-full border border-border">
+            <img src={panaRadioLogo} alt="PANA RADIO" className="h-8 w-8 rounded" />
+            <div className="flex flex-col">
+              <span className="text-sm font-bold text-primary">PANA RADIO</span>
+              <span className="text-xs text-muted-foreground">Radio Panafricaine</span>
+            </div>
+          </div>
+        </div>
 
         <div className="grid lg:grid-cols-[1fr_400px] gap-8">
           {/* Main Player */}

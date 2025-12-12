@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useMediaPlayer } from "@/hooks/useMediaPlayer";
 import panaRadioLogo from "@/assets/pana-radio-logo.png";
@@ -80,6 +81,10 @@ const Podcasts = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
+      <SEOHead 
+        title="Podcasts - PANA RADIO"
+        description="Écoutez les podcasts de PANA RADIO. Découvrez nos derniers épisodes sur la culture, la musique et l'actualité africaine."
+      />
       <Header />
       
       <main className="flex-1 pb-32">
