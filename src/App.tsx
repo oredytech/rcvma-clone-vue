@@ -15,6 +15,7 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import LiveTV from "./pages/LiveTV";
 import Podcasts from "./pages/Podcasts";
+import PodcastPlayer from "./pages/PodcastPlayer";
 import NotFound from "./pages/NotFound";
 import MediaPlayer from "./components/MediaPlayer";
 import CookieBanner from "./components/CookieBanner";
@@ -39,6 +40,7 @@ const App = () => (
           <Route path="/conditions" element={<Terms />} />
           <Route path="/tv-direct" element={<LiveTV />} />
           <Route path="/podcasts" element={<Podcasts />} />
+          <Route path="/podcast/:slug" element={<PodcastPlayer />} />
           {/* Route dynamique pour les articles - doit être en dernier */}
           <Route path="/:slug" element={<Article />} />
         </Routes>
