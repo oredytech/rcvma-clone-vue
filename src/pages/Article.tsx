@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { fetchPostBySlug, formatDate, formatWordPressContent, WordPressPost, incrementArticleViews, getArticleViews } from "@/lib/wordpress";
+import { fetchPostBySlug, formatDate, formatWordPressContent, WordPressPost, incrementArticleViews, fetchRelatedPosts } from "@/lib/wordpress";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CategoryBadge from "@/components/CategoryBadge";
 import ArticleSidebar from "@/components/ArticleSidebar";
 import SEOHead from "@/components/SEOHead";
+import ReadAlsoCard from "@/components/ReadAlsoCard";
 import { Button } from "@/components/ui/button";
 import { Calendar, ArrowLeft, Loader2, Eye } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -23,9 +24,16 @@ const Article = () => {
     enabled: !!slug,
   });
 
+  // Récupérer les articles liés de la même catégorie
+  const categoryId = post?.categories?.[0];
+  const { data: relatedPosts = [] } = useQuery<WordPressPost[]>({
+    queryKey: ['relatedPosts', categoryId, post?.id],
+    queryFn: () => fetchRelatedPosts(categoryId!, post!.id, 5),
+    enabled: !!categoryId && !!post?.id,
+  });
+
   useEffect(() => {
     if (error || (!isLoading && !post)) {
-      // Ne pas rediriger si c'est une route statique
       const staticRoutes = ['a-propos', 'contacts', 'categories', 'rechercher', 'equipe', 'programme', 'confidentialite', 'conditions', 'tv-direct', 'podcasts'];
       if (slug && !staticRoutes.includes(slug)) {
         navigate('/404');
@@ -37,13 +45,59 @@ const Article = () => {
     window.scrollTo(0, 0);
   }, [slug]);
 
-  // Incrémenter les vues lors du chargement de l'article
   useEffect(() => {
     if (post?.id) {
       const newViews = incrementArticleViews(post.id);
       setViews(newViews);
     }
   }, [post?.id]);
+
+  // Insérer les "Lire aussi" dans le contenu
+  const contentWithReadAlso = useMemo(() => {
+    if (!post || relatedPosts.length === 0) return null;
+
+    const formattedContent = formatWordPressContent(post.content.rendered);
+    
+    // Diviser le contenu en paragraphes
+    const paragraphs = formattedContent.split('</p>').filter(p => p.trim());
+    
+    // Déterminer le nombre de "Lire aussi" selon la longueur
+    const isLongArticle = paragraphs.length >= 6;
+    const numReadAlso = isLongArticle ? Math.min(5, relatedPosts.length) : Math.min(2, relatedPosts.length);
+    
+    if (paragraphs.length <= 2 || numReadAlso === 0) {
+      // Article trop court, ajouter les suggestions à la fin
+      return {
+        content: formattedContent,
+        endSuggestions: relatedPosts.slice(0, numReadAlso)
+      };
+    }
+
+    // Calculer les positions d'insertion
+    const positions: number[] = [];
+    if (isLongArticle) {
+      // Pour les longs articles, répartir les 5 liens uniformément
+      const step = Math.floor(paragraphs.length / (numReadAlso + 1));
+      for (let i = 1; i <= numReadAlso; i++) {
+        positions.push(step * i);
+      }
+    } else {
+      // Pour les courts articles, 2 liens
+      if (paragraphs.length >= 4) {
+        positions.push(Math.floor(paragraphs.length / 3));
+        positions.push(Math.floor((paragraphs.length * 2) / 3));
+      } else {
+        positions.push(1);
+        if (paragraphs.length >= 3) positions.push(2);
+      }
+    }
+
+    return {
+      paragraphs,
+      positions,
+      suggestions: relatedPosts.slice(0, numReadAlso)
+    };
+  }, [post, relatedPosts]);
 
   if (isLoading) {
     return (
@@ -63,6 +117,121 @@ const Article = () => {
   const featuredImage = post._embedded?.['wp:featuredmedia']?.[0]?.source_url;
   const categories = post._embedded?.['wp:term']?.[0] || [];
   const plainDescription = post.excerpt?.rendered?.replace(/<[^>]*>/g, '').substring(0, 160) || "";
+
+  // Fonction pour rendre le contenu avec les "Lire aussi" intercalés
+  const renderContentWithReadAlso = () => {
+    if (!contentWithReadAlso) {
+      return (
+        <div 
+          className="prose prose-base md:prose-lg max-w-none
+            prose-headings:font-bold prose-headings:text-foreground prose-headings:mt-8 prose-headings:mb-4
+            prose-h2:text-2xl prose-h3:text-xl prose-h4:text-lg
+            prose-p:text-foreground prose-p:leading-relaxed prose-p:mb-6 prose-p:mt-0 prose-p:text-justify
+            prose-a:text-primary prose-a:font-medium prose-a:no-underline hover:prose-a:underline
+            prose-strong:text-foreground prose-strong:font-bold
+            prose-em:text-foreground prose-em:italic
+            prose-ul:list-disc prose-ul:pl-6 prose-ul:mb-6 prose-ul:mt-6 prose-ul:space-y-2
+            prose-ol:list-decimal prose-ol:pl-6 prose-ol:mb-6 prose-ol:mt-6 prose-ol:space-y-2
+            prose-li:text-foreground prose-li:leading-relaxed prose-li:mb-2
+            prose-img:rounded-lg prose-img:shadow-lg prose-img:my-8 prose-img:w-full
+            prose-blockquote:border-l-4 prose-blockquote:border-primary 
+            prose-blockquote:pl-6 prose-blockquote:pr-4 prose-blockquote:py-4 
+            prose-blockquote:italic prose-blockquote:text-muted-foreground 
+            prose-blockquote:bg-muted/30 prose-blockquote:rounded-r-lg prose-blockquote:my-6
+            prose-code:bg-muted prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm
+            prose-pre:bg-muted prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto prose-pre:my-6
+            prose-hr:border-border prose-hr:my-8
+            prose-table:border-collapse prose-table:w-full prose-table:my-6
+            prose-th:border prose-th:border-border prose-th:bg-muted prose-th:p-3 prose-th:font-bold
+            prose-td:border prose-td:border-border prose-td:p-3
+            [&>p]:mb-6 [&>p]:mt-0 [&>p]:block"
+          dangerouslySetInnerHTML={{ __html: formatWordPressContent(post.content.rendered) }}
+        />
+      );
+    }
+
+    // Si on a juste du contenu avec suggestions à la fin
+    if ('content' in contentWithReadAlso && contentWithReadAlso.endSuggestions) {
+      return (
+        <>
+          <div 
+            className="prose prose-base md:prose-lg max-w-none
+              prose-headings:font-bold prose-headings:text-foreground prose-headings:mt-8 prose-headings:mb-4
+              prose-h2:text-2xl prose-h3:text-xl prose-h4:text-lg
+              prose-p:text-foreground prose-p:leading-relaxed prose-p:mb-6 prose-p:mt-0 prose-p:text-justify
+              prose-a:text-primary prose-a:font-medium prose-a:no-underline hover:prose-a:underline
+              prose-strong:text-foreground prose-strong:font-bold
+              prose-em:text-foreground prose-em:italic
+              prose-ul:list-disc prose-ul:pl-6 prose-ul:mb-6 prose-ul:mt-6 prose-ul:space-y-2
+              prose-ol:list-decimal prose-ol:pl-6 prose-ol:mb-6 prose-ol:mt-6 prose-ol:space-y-2
+              prose-li:text-foreground prose-li:leading-relaxed prose-li:mb-2
+              prose-img:rounded-lg prose-img:shadow-lg prose-img:my-8 prose-img:w-full
+              prose-blockquote:border-l-4 prose-blockquote:border-primary 
+              prose-blockquote:pl-6 prose-blockquote:pr-4 prose-blockquote:py-4 
+              prose-blockquote:italic prose-blockquote:text-muted-foreground 
+              prose-blockquote:bg-muted/30 prose-blockquote:rounded-r-lg prose-blockquote:my-6
+              prose-code:bg-muted prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm
+              prose-pre:bg-muted prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto prose-pre:my-6
+              prose-hr:border-border prose-hr:my-8
+              prose-table:border-collapse prose-table:w-full prose-table:my-6
+              prose-th:border prose-th:border-border prose-th:bg-muted prose-th:p-3 prose-th:font-bold
+              prose-td:border prose-td:border-border prose-td:p-3
+              [&>p]:mb-6 [&>p]:mt-0 [&>p]:block"
+            dangerouslySetInnerHTML={{ __html: contentWithReadAlso.content }}
+          />
+          {contentWithReadAlso.endSuggestions.map((relatedPost) => (
+            <ReadAlsoCard
+              key={relatedPost.id}
+              title={relatedPost.title.rendered}
+              imageUrl={relatedPost._embedded?.['wp:featuredmedia']?.[0]?.source_url}
+              slug={relatedPost.slug}
+            />
+          ))}
+        </>
+      );
+    }
+
+    // Contenu avec "Lire aussi" intercalés
+    if ('paragraphs' in contentWithReadAlso) {
+      const { paragraphs, positions, suggestions } = contentWithReadAlso;
+      const result: React.ReactNode[] = [];
+      let suggestionIndex = 0;
+
+      paragraphs.forEach((paragraph, index) => {
+        // Ajouter le paragraphe
+        result.push(
+          <div 
+            key={`p-${index}`}
+            className="prose prose-base md:prose-lg max-w-none mb-6
+              prose-headings:font-bold prose-headings:text-foreground
+              prose-p:text-foreground prose-p:leading-relaxed prose-p:text-justify
+              prose-a:text-primary prose-a:font-medium prose-a:no-underline hover:prose-a:underline
+              prose-strong:text-foreground prose-strong:font-bold
+              prose-img:rounded-lg prose-img:shadow-lg prose-img:my-4 prose-img:w-full"
+            dangerouslySetInnerHTML={{ __html: paragraph + '</p>' }}
+          />
+        );
+
+        // Vérifier si on doit insérer un "Lire aussi" après ce paragraphe
+        if (positions.includes(index + 1) && suggestionIndex < suggestions.length) {
+          const relatedPost = suggestions[suggestionIndex];
+          result.push(
+            <ReadAlsoCard
+              key={`read-also-${suggestionIndex}`}
+              title={relatedPost.title.rendered}
+              imageUrl={relatedPost._embedded?.['wp:featuredmedia']?.[0]?.source_url}
+              slug={relatedPost.slug}
+            />
+          );
+          suggestionIndex++;
+        }
+      });
+
+      return <>{result}</>;
+    }
+
+    return null;
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -123,31 +292,7 @@ const Article = () => {
                   </div>
                 </div>
 
-                <div 
-                  className="prose prose-base md:prose-lg max-w-none
-                    prose-headings:font-bold prose-headings:text-foreground prose-headings:mt-8 prose-headings:mb-4
-                    prose-h2:text-2xl prose-h3:text-xl prose-h4:text-lg
-                    prose-p:text-foreground prose-p:leading-relaxed prose-p:mb-6 prose-p:mt-0 prose-p:text-justify
-                    prose-a:text-primary prose-a:font-medium prose-a:no-underline hover:prose-a:underline
-                    prose-strong:text-foreground prose-strong:font-bold
-                    prose-em:text-foreground prose-em:italic
-                    prose-ul:list-disc prose-ul:pl-6 prose-ul:mb-6 prose-ul:mt-6 prose-ul:space-y-2
-                    prose-ol:list-decimal prose-ol:pl-6 prose-ol:mb-6 prose-ol:mt-6 prose-ol:space-y-2
-                    prose-li:text-foreground prose-li:leading-relaxed prose-li:mb-2
-                    prose-img:rounded-lg prose-img:shadow-lg prose-img:my-8 prose-img:w-full
-                    prose-blockquote:border-l-4 prose-blockquote:border-primary 
-                    prose-blockquote:pl-6 prose-blockquote:pr-4 prose-blockquote:py-4 
-                    prose-blockquote:italic prose-blockquote:text-muted-foreground 
-                    prose-blockquote:bg-muted/30 prose-blockquote:rounded-r-lg prose-blockquote:my-6
-                    prose-code:bg-muted prose-code:px-2 prose-code:py-1 prose-code:rounded prose-code:text-sm
-                    prose-pre:bg-muted prose-pre:p-4 prose-pre:rounded-lg prose-pre:overflow-x-auto prose-pre:my-6
-                    prose-hr:border-border prose-hr:my-8
-                    prose-table:border-collapse prose-table:w-full prose-table:my-6
-                    prose-th:border prose-th:border-border prose-th:bg-muted prose-th:p-3 prose-th:font-bold
-                    prose-td:border prose-td:border-border prose-td:p-3
-                    [&>p]:mb-6 [&>p]:mt-0 [&>p]:block"
-                  dangerouslySetInnerHTML={{ __html: formatWordPressContent(post.content.rendered) }}
-                />
+                {renderContentWithReadAlso()}
               </div>
             </article>
 

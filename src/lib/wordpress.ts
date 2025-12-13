@@ -90,6 +90,21 @@ export async function fetchCategories(): Promise<WordPressCategory[]> {
   }
 }
 
+// Récupérer des articles de la même catégorie (excluant l'article actuel)
+export async function fetchRelatedPosts(categoryId: number, excludePostId: number, limit = 5): Promise<WordPressPost[]> {
+  try {
+    const response = await fetch(
+      `${WP_API_BASE}/posts?_embed&per_page=${limit + 1}&categories=${categoryId}&orderby=date&order=desc`
+    );
+    if (!response.ok) throw new Error('Failed to fetch related posts');
+    const posts: WordPressPost[] = await response.json();
+    return posts.filter(post => post.id !== excludePostId).slice(0, limit);
+  } catch (error) {
+    console.error('Error fetching related posts:', error);
+    return [];
+  }
+}
+
 // Gestion des vues d'articles (localStorage)
 const VIEW_COUNT_KEY = 'article_views';
 
