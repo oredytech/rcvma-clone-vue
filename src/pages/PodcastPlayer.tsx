@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, ChevronDown, Clock, Calendar, Shuffle, Repeat, ListMusic, Share2, Radio } from "lucide-react";
+import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX, ChevronDown, Clock, Calendar, Shuffle, Repeat, ListMusic, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -35,8 +35,10 @@ const PodcastPlayer = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [channelImage, setChannelImage] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
   
   const audioRef = useRef<HTMLAudioElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   // Generate slug from title
   const generateSlug = (title: string) => {
@@ -47,6 +49,21 @@ const PodcastPlayer = () => {
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/(^-|-$)/g, "");
   };
+
+  // Handle scroll for sticky play button on mobile
+  useEffect(() => {
+    if (!isMobile) return;
+    
+    const handleScroll = () => {
+      if (scrollContainerRef.current) {
+        setIsScrolled(scrollContainerRef.current.scrollTop > 300);
+      }
+    };
+
+    const container = scrollContainerRef.current;
+    container?.addEventListener('scroll', handleScroll);
+    return () => container?.removeEventListener('scroll', handleScroll);
+  }, [isMobile]);
 
   // Fetch all episodes
   useEffect(() => {
@@ -79,7 +96,6 @@ const PodcastPlayer = () => {
         
         setEpisodes(parsedEpisodes);
         
-        // Find episode by slug or use first one
         if (slug) {
           const foundIndex = parsedEpisodes.findIndex(ep => ep.slug === slug);
           if (foundIndex !== -1) {
@@ -108,7 +124,6 @@ const PodcastPlayer = () => {
     if (audioRef.current && currentEpisode) {
       audioRef.current.src = currentEpisode.audioUrl;
       audioRef.current.load();
-      // Autoplay when episode is loaded
       audioRef.current.play().catch(err => console.error("Erreur lecture auto:", err));
     }
   }, [currentEpisode]);
@@ -128,7 +143,6 @@ const PodcastPlayer = () => {
     const handleEnded = () => {
       setLocalIsPlaying(false);
       setIsPlaying(false);
-      // Auto-play next
       if (currentIndex < episodes.length - 1) {
         playNext();
       }
@@ -252,20 +266,23 @@ const PodcastPlayer = () => {
     );
   }
 
-  // Mobile Full Screen Player
+  // Get the episode-specific image
+  const episodeImage = currentEpisode.imageUrl || channelImage || panaRadioLogo;
+
+  // Mobile Full Screen Player with Scroll
   if (isMobile) {
     return (
       <div className="fixed inset-0 z-50 bg-gradient-to-b from-primary/20 via-background to-background flex flex-col">
         <SEOHead 
           title={`${currentEpisode.title} - PANA RADIO Podcast`}
           description={currentEpisode.description?.replace(/<[^>]*>/g, '').substring(0, 160)}
-          image={currentEpisode.imageUrl || channelImage || panaRadioLogo}
+          image={episodeImage}
           type="music.song"
         />
         <audio ref={audioRef} preload="metadata" />
         
-        {/* Header with Logo */}
-        <div className="flex items-center justify-between p-4">
+        {/* Fixed Header */}
+        <div className="flex items-center justify-between p-4 flex-shrink-0">
           <Button variant="ghost" size="icon" onClick={handleClose}>
             <ChevronDown className="h-6 w-6" />
           </Button>
@@ -273,18 +290,33 @@ const PodcastPlayer = () => {
             <img src={panaRadioLogo} alt="PANA RADIO" className="h-6 w-6 rounded" />
             <span className="text-xs font-bold text-primary uppercase tracking-wider">PANA RADIO</span>
           </div>
-          <Button variant="ghost" size="icon">
-            <Share2 className="h-5 w-5" />
-          </Button>
+          
+          {/* Sticky Play Button when scrolled */}
+          {isScrolled ? (
+            <Button 
+              size="icon" 
+              onClick={togglePlay} 
+              className="h-10 w-10 rounded-full bg-primary hover:bg-primary/90"
+            >
+              {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5 ml-0.5" />}
+            </Button>
+          ) : (
+            <Button variant="ghost" size="icon">
+              <Share2 className="h-5 w-5" />
+            </Button>
+          )}
         </div>
 
-        {/* Main Content */}
-        <div className="flex-1 flex flex-col px-6 overflow-hidden">
+        {/* Scrollable Content */}
+        <div 
+          ref={scrollContainerRef}
+          className="flex-1 overflow-y-auto px-6"
+        >
           {/* Album Art */}
           <div className="flex justify-center py-6">
             <div className="relative">
               <img 
-                src={currentEpisode.imageUrl || channelImage || panaRadioLogo} 
+                src={episodeImage} 
                 alt={currentEpisode.title} 
                 className="w-64 h-64 rounded-lg object-cover shadow-2xl bg-muted"
                 onError={(e) => {
@@ -321,7 +353,7 @@ const PodcastPlayer = () => {
           </div>
 
           {/* Controls */}
-          <div className="flex items-center justify-center gap-6 mb-6">
+          <div className="flex items-center justify-center gap-6 mb-8">
             <Button 
               size="icon" 
               variant="ghost" 
@@ -369,55 +401,65 @@ const PodcastPlayer = () => {
             </Button>
           </div>
 
+          {/* Description */}
+          <div className="mb-6">
+            <h3 className="text-sm font-semibold text-foreground mb-2">Description</h3>
+            <p 
+              className="text-sm text-muted-foreground leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: currentEpisode.description }}
+            />
+          </div>
+
           {/* Episode List */}
-          <div className="flex-1 overflow-hidden">
-            <div className="flex items-center gap-2 mb-3">
+          <div className="pb-8">
+            <div className="flex items-center gap-2 mb-4">
               <ListMusic className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm font-medium text-foreground">Épisodes suivants</span>
             </div>
             
-            <ScrollArea className="h-full pb-4">
-              <div className="space-y-2">
-                {episodes.map((episode, index) => (
-                  <div 
-                    key={index}
-                    onClick={() => playEpisode(episode, index)}
-                    className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-colors ${
-                      index === currentIndex 
-                        ? 'bg-primary/20 border border-primary/30' 
-                        : 'hover:bg-muted/50'
-                    }`}
-                  >
-                    <img 
-                      src={episode.imageUrl || channelImage || panaRadioLogo}
-                      alt={episode.title}
-                      className="w-10 h-10 rounded object-cover flex-shrink-0"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <p className={`text-sm font-medium line-clamp-1 ${index === currentIndex ? 'text-primary' : 'text-foreground'}`}>
-                        {episode.title}
-                      </p>
-                      <p className="text-xs text-muted-foreground">{episode.duration}</p>
-                    </div>
-                    <Button 
-                      size="icon" 
-                      variant="ghost" 
-                      className="h-8 w-8 flex-shrink-0"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        playEpisode(episode, index);
-                      }}
-                    >
-                      {index === currentIndex && isPlaying ? (
-                        <Pause className="h-4 w-4 text-primary" />
-                      ) : (
-                        <Play className="h-4 w-4" />
-                      )}
-                    </Button>
+            <div className="space-y-2">
+              {episodes.map((episode, index) => (
+                <div 
+                  key={index}
+                  onClick={() => playEpisode(episode, index)}
+                  className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-colors ${
+                    index === currentIndex 
+                      ? 'bg-primary/20 border border-primary/30' 
+                      : 'hover:bg-muted/50'
+                  }`}
+                >
+                  <img 
+                    src={episode.imageUrl || channelImage || panaRadioLogo}
+                    alt={episode.title}
+                    className="w-12 h-12 rounded object-cover flex-shrink-0"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = panaRadioLogo;
+                    }}
+                  />
+                  <div className="flex-1 min-w-0">
+                    <p className={`text-sm font-medium line-clamp-1 ${index === currentIndex ? 'text-primary' : 'text-foreground'}`}>
+                      {episode.title}
+                    </p>
+                    <p className="text-xs text-muted-foreground">{episode.duration}</p>
                   </div>
-                ))}
-              </div>
-            </ScrollArea>
+                  <Button 
+                    size="icon" 
+                    variant="ghost" 
+                    className="h-8 w-8 flex-shrink-0"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      playEpisode(episode, index);
+                    }}
+                  >
+                    {index === currentIndex && isPlaying ? (
+                      <Pause className="h-4 w-4 text-primary" />
+                    ) : (
+                      <Play className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -430,7 +472,7 @@ const PodcastPlayer = () => {
       <SEOHead 
         title={`${currentEpisode.title} - PANA RADIO Podcast`}
         description={currentEpisode.description?.replace(/<[^>]*>/g, '').substring(0, 160)}
-        image={currentEpisode.imageUrl || channelImage || panaRadioLogo}
+        image={episodeImage}
         type="music.song"
       />
       <audio ref={audioRef} preload="metadata" />
@@ -459,7 +501,7 @@ const PodcastPlayer = () => {
               <div className="flex-shrink-0">
                 <div className="relative group">
                   <img 
-                    src={currentEpisode.imageUrl || channelImage || panaRadioLogo} 
+                    src={episodeImage} 
                     alt={currentEpisode.title} 
                     className="w-64 h-64 md:w-80 md:h-80 rounded-xl object-cover shadow-2xl transition-transform group-hover:scale-[1.02] bg-muted"
                     onError={(e) => {
@@ -618,7 +660,7 @@ const PodcastPlayer = () => {
                   <div 
                     key={index}
                     onClick={() => playEpisode(episode, index)}
-                    className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all ${
+                    className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all group ${
                       index === currentIndex 
                         ? 'bg-primary/20 border border-primary/30' 
                         : 'hover:bg-muted/50'
@@ -640,6 +682,9 @@ const PodcastPlayer = () => {
                       src={episode.imageUrl || channelImage || panaRadioLogo}
                       alt={episode.title}
                       className="w-12 h-12 rounded object-cover flex-shrink-0"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = panaRadioLogo;
+                      }}
                     />
                     
                     <div className="flex-1 min-w-0">
@@ -652,7 +697,7 @@ const PodcastPlayer = () => {
                     <Button 
                       size="icon" 
                       variant="ghost" 
-                      className="h-8 w-8 flex-shrink-0 opacity-0 group-hover:opacity-100"
+                      className="h-8 w-8 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
                       onClick={(e) => {
                         e.stopPropagation();
                         playEpisode(episode, index);
