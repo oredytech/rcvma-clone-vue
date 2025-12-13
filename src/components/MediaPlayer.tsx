@@ -2,16 +2,21 @@ import { Play, Pause, Volume2, Radio, X, SkipBack, SkipForward } from "lucide-re
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { useState, useEffect, useRef } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useMediaPlayer } from "@/hooks/useMediaPlayer";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
 import panaRadioLogo from "@/assets/pana-radio-logo.png";
+
 const RADIO_STREAM_URL = "https://stream.zeno.fm/qdgq60qkb3gvv";
+
 const MediaPlayer = () => {
   const [volume, setVolume] = useState([70]);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
+  const location = useLocation();
   const {
     activePlayer,
     isVisible,
@@ -25,6 +30,10 @@ const MediaPlayer = () => {
   const scrollDirection = useScrollDirection();
   const [isMinimized, setIsMinimized] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  // Check if we're on podcast player page
+  const isOnPodcastPage = location.pathname.startsWith('/podcast/');
+
   useEffect(() => {
     if (isMobile && scrollDirection === 'down' && window.scrollY > 50) {
       setIsMinimized(true);
@@ -32,7 +41,11 @@ const MediaPlayer = () => {
       setIsMinimized(false);
     }
   }, [scrollDirection, isMobile]);
+
   useEffect(() => {
+    // Don't control audio if we're on podcast player page (it has its own audio)
+    if (isOnPodcastPage && activePlayer === 'podcast') return;
+
     if (audioRef.current) {
       if (activePlayer === 'radio') {
         audioRef.current.src = RADIO_STREAM_URL;
@@ -45,47 +58,62 @@ const MediaPlayer = () => {
         audioRef.current.pause();
       }
     }
-  }, [isPlaying, activePlayer, podcastInfo]);
+  }, [isPlaying, activePlayer, podcastInfo, isOnPodcastPage]);
+
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = volume[0] / 100;
     }
   }, [volume]);
+
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
+
     const updateTime = () => setCurrentTime(audio.currentTime);
     const updateDuration = () => setDuration(audio.duration);
     const handleEnded = () => setIsPlaying(false);
+
     audio.addEventListener('timeupdate', updateTime);
     audio.addEventListener('loadedmetadata', updateDuration);
     audio.addEventListener('ended', handleEnded);
+
     return () => {
       audio.removeEventListener('timeupdate', updateTime);
       audio.removeEventListener('loadedmetadata', updateDuration);
       audio.removeEventListener('ended', handleEnded);
     };
   }, [setIsPlaying]);
+
   const handleSeek = (value: number[]) => {
     if (audioRef.current && activePlayer === 'podcast') {
       audioRef.current.currentTime = value[0];
       setCurrentTime(value[0]);
     }
   };
+
   const formatTime = (seconds: number) => {
     if (!seconds || isNaN(seconds)) return '0:00';
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
+
   const skipForward = () => {
     if (audioRef.current && activePlayer === 'podcast') {
       audioRef.current.currentTime = Math.min(audioRef.current.currentTime + 15, duration);
     }
   };
+
   const skipBackward = () => {
     if (audioRef.current && activePlayer === 'podcast') {
       audioRef.current.currentTime = Math.max(audioRef.current.currentTime - 15, 0);
+    }
+  };
+
+  const handlePlayerClick = () => {
+    if (activePlayer === 'podcast' && podcastInfo?.slug) {
+      navigate(`/podcast/${podcastInfo.slug}`);
     }
   };
 
@@ -93,16 +121,24 @@ const MediaPlayer = () => {
   if (!isMobile && activePlayer && !isVisible) {
     setIsVisible(true);
   }
+
+  // Hide player if we're on podcast page
+  if (isOnPodcastPage && activePlayer === 'podcast') return null;
+
   if (isMobile && isMinimized && isVisible && activePlayer) {
     return <>
         <audio ref={audioRef} preload="none" />
-        <div className="fixed bottom-[63px] right-4 z-40 animate-in slide-in-from-bottom-2">
-          <Button size="sm" onClick={togglePlay} className="bg-primary hover:bg-primary/90 h-11 w-11 p-0 rounded-full shadow-lg opacity-70">
+        <div 
+          className="fixed bottom-[63px] right-4 z-40 animate-in slide-in-from-bottom-2"
+          onClick={activePlayer === 'podcast' ? handlePlayerClick : undefined}
+        >
+          <Button size="sm" onClick={(e) => { e.stopPropagation(); togglePlay(); }} className="bg-primary hover:bg-primary/90 h-11 w-11 p-0 rounded-full shadow-lg opacity-70">
             {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4 ml-0.5" />}
           </Button>
         </div>
       </>;
   }
+
   if (!isVisible || !activePlayer) return null;
   return <>
       <audio ref={audioRef} preload="none" />
@@ -122,8 +158,11 @@ const MediaPlayer = () => {
             </div>}
 
           <div className="flex items-center justify-between gap-4">
-            {/* Info media */}
-            <div className="flex items-center gap-3 flex-1 min-w-0">
+            {/* Info media - clickable for podcast */}
+            <div 
+              className={`flex items-center gap-3 flex-1 min-w-0 ${activePlayer === 'podcast' && podcastInfo?.slug ? 'cursor-pointer hover:opacity-80' : ''}`}
+              onClick={activePlayer === 'podcast' ? handlePlayerClick : undefined}
+            >
               <div className="flex-shrink-0 bg-primary/20 p-2 rounded-lg">
                 {activePlayer === 'radio' ? <img src={panaRadioLogo} alt="PANA RADIO" className="h-8 w-8 object-contain" /> : podcastInfo?.imageUrl ? <img src={podcastInfo.imageUrl} alt="Podcast" className="h-8 w-8 object-cover rounded" /> : <Radio className="h-5 w-5 text-primary" />}
               </div>
