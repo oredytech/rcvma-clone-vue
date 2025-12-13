@@ -6,6 +6,7 @@ interface PodcastInfo {
   title: string;
   audioUrl: string;
   imageUrl?: string;
+  slug?: string;
 }
 
 interface MediaPlayerState {

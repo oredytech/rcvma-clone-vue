@@ -23,7 +23,7 @@ const PodcastPlayer = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  const { setIsPlaying } = useMediaPlayer();
+  const { setIsPlaying, switchToPodcast, isPlaying: globalIsPlaying, podcastInfo } = useMediaPlayer();
   
   const [episodes, setEpisodes] = useState<PodcastEpisode[]>([]);
   const [currentEpisode, setCurrentEpisode] = useState<PodcastEpisode | null>(null);
@@ -125,8 +125,16 @@ const PodcastPlayer = () => {
       audioRef.current.src = currentEpisode.audioUrl;
       audioRef.current.load();
       audioRef.current.play().catch(err => console.error("Erreur lecture auto:", err));
+      
+      // Update global state for the bottom player
+      switchToPodcast({
+        title: currentEpisode.title,
+        audioUrl: currentEpisode.audioUrl,
+        imageUrl: currentEpisode.imageUrl || channelImage,
+        slug: currentEpisode.slug
+      });
     }
-  }, [currentEpisode]);
+  }, [currentEpisode, channelImage, switchToPodcast]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -241,8 +249,15 @@ const PodcastPlayer = () => {
   };
 
   const handleClose = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
+    // Don't pause - keep playing in background via MediaPlayer
+    // Just update global state and navigate away
+    if (currentEpisode) {
+      switchToPodcast({
+        title: currentEpisode.title,
+        audioUrl: currentEpisode.audioUrl,
+        imageUrl: currentEpisode.imageUrl || channelImage,
+        slug: currentEpisode.slug
+      });
     }
     navigate('/podcasts');
   };
