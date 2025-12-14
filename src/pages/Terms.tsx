@@ -3,15 +3,14 @@ import { fetchCategories, WordPressCategory } from "@/lib/wordpress";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { FileText, Scale, AlertCircle } from "lucide-react";
-
 const Terms = () => {
-  const { data: categories = [] } = useQuery<WordPressCategory[]>({
+  const {
+    data: categories = []
+  } = useQuery<WordPressCategory[]>({
     queryKey: ['categories'],
     queryFn: fetchCategories
   });
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       <Header categories={categories} />
       
       <main className="container mx-auto py-12 px-4 mb-20 md:mb-0">
@@ -31,17 +30,14 @@ const Terms = () => {
                 Acceptation des conditions
               </h2>
               <p className="text-muted-foreground">
-                En accédant et en utilisant le site web d'OREDY MEDIA, vous acceptez d'être lié par ces conditions d'utilisation. 
-                Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser notre site.
+                En accédant et en utilisant le site web ou application web de PANA RADIO, vous acceptez d'être lié par ces conditions d'utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser notre site.
               </p>
             </section>
 
             <section className="bg-card border border-border rounded-lg p-6">
               <h2 className="text-2xl font-bold text-foreground mb-4">Propriété intellectuelle</h2>
               <p className="text-muted-foreground">
-                Tout le contenu présent sur ce site, y compris les textes, images, logos, et enregistrements audio, 
-                est la propriété d'OREDY MEDIA ou de ses fournisseurs de contenu et est protégé par les lois sur la 
-                propriété intellectuelle.
+                   Le contenu présent sur ce site, y compris les textes, logos, et enregistrements audio, est la propriété de PANA RADIO ou de ses fournisseurs de contenu et est protégé par les lois sur la propriété intellectuelle.
               </p>
             </section>
 
@@ -93,16 +89,14 @@ const Terms = () => {
             <section className="bg-card border border-border rounded-lg p-6">
               <h2 className="text-2xl font-bold text-foreground mb-4">Limitation de responsabilité</h2>
               <p className="text-muted-foreground">
-                OREDY MEDIA ne peut être tenu responsable des dommages directs ou indirects résultant de l'utilisation 
-                ou de l'impossibilité d'utiliser ce site web.
+                 PANA RADIO ne peut être tenu responsable des dommages directs ou indirects résultant de l'utilisation ou de l'impossibilité d'utiliser ce site web.
               </p>
             </section>
 
             <section className="bg-card border border-border rounded-lg p-6">
               <h2 className="text-2xl font-bold text-foreground mb-4">Modifications</h2>
               <p className="text-muted-foreground">
-                OREDY MEDIA se réserve le droit de modifier ces conditions d'utilisation à tout moment. 
-                Les modifications entreront en vigueur dès leur publication sur le site.
+                PANA RADIO se réserve le droit de modifier ces conditions d'utilisation à tout moment. Les modifications entreront en vigueur dès leur publication sur le site.
               </p>
             </section>
 
@@ -111,7 +105,7 @@ const Terms = () => {
               <p className="text-muted-foreground">
                 Pour toute question concernant ces conditions d'utilisation, veuillez nous contacter à:
                 <br />
-                <a href="mailto:legal@oredymedia.org" className="text-primary hover:underline">legal@oredymedia.org</a>
+                <a className="text-primary hover:underline" href="mailto:legal@panaradio.net">legal@panaradio.net</a>
               </p>
             </section>
           </div>
@@ -119,8 +113,6 @@ const Terms = () => {
       </main>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Terms;
