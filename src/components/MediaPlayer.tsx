@@ -8,7 +8,7 @@ import { useMediaPlayer } from "@/hooks/useMediaPlayer";
 import { useScrollDirection } from "@/hooks/useScrollDirection";
 import panaRadioLogo from "@/assets/pana-radio-logo.png";
 
-const RADIO_STREAM_URL = "https://stream.zeno.fm/qdgq60qkb3gvv";
+const RADIO_STREAM_URL = "https://stream.zeno.fm/dnw3x5tqpc9uv";
 
 const MediaPlayer = () => {
   const [volume, setVolume] = useState([70]);
