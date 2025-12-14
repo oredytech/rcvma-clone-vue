@@ -19,11 +19,11 @@ const BreakingNews = () => {
           </div>
           <div className="flex-1 overflow-hidden">
             <div className="animate-marquee flex gap-8 whitespace-nowrap">
-              {posts.map(post => <Link key={post.id} to={`/article/${post.slug}`} className="hover:underline text-sm">
+              {posts.map(post => <Link key={post.id} to={`/${post.slug}`} className="hover:underline text-sm">
                   {post.title.rendered}
                 </Link>)}
               {/* Duplicate pour un défilement continu */}
-              {posts.map(post => <Link key={`dup-${post.id}`} to={`/article/${post.slug}`} className="hover:underline text-sm">
+              {posts.map(post => <Link key={`dup-${post.id}`} to={`/${post.slug}`} className="hover:underline text-sm">
                   {post.title.rendered}
                 </Link>)}
             </div>
