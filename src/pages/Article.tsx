@@ -73,22 +73,23 @@ const Article = () => {
       };
     }
 
-    // Calculer les positions d'insertion
+    // Calculer les positions d'insertion - après chaque 3 paragraphes
     const positions: number[] = [];
     if (isLongArticle) {
-      // Pour les longs articles, répartir les 5 liens uniformément
-      const step = Math.floor(paragraphs.length / (numReadAlso + 1));
-      for (let i = 1; i <= numReadAlso; i++) {
-        positions.push(step * i);
+      // Pour les longs articles, placer les liens après chaque 3 paragraphes
+      for (let i = 0; i < numReadAlso; i++) {
+        const position = 3 + (i * 3); // Après 3, 6, 9, 12, 15 paragraphes
+        if (position <= paragraphs.length) {
+          positions.push(position);
+        }
       }
     } else {
-      // Pour les courts articles, 2 liens
-      if (paragraphs.length >= 4) {
-        positions.push(Math.floor(paragraphs.length / 3));
-        positions.push(Math.floor((paragraphs.length * 2) / 3));
-      } else {
-        positions.push(1);
-        if (paragraphs.length >= 3) positions.push(2);
+      // Pour les courts articles, 2 liens séparés par 3 paragraphes
+      if (paragraphs.length >= 3) {
+        positions.push(3); // Après le 3ème paragraphe
+        if (paragraphs.length >= 6) {
+          positions.push(6); // Après le 6ème paragraphe
+        }
       }
     }
 
