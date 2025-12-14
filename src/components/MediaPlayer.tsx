@@ -148,8 +148,8 @@ const MediaPlayer = () => {
           ${isMobile ? 'bottom-[63px] rounded-tl-[8px] rounded-tr-[8px]' : 'bottom-0'}
         `}>
         <div className="container mx-auto px-4 py-[4px]">
-          {/* Barre de progression pour podcast */}
-          {activePlayer === 'podcast' && <div className="mb-2">
+        {/* Barre de progression pour podcast - desktop only */}
+          {activePlayer === 'podcast' && !isMobile && <div className="mb-2">
               <Slider value={[currentTime]} max={duration || 100} step={1} onValueChange={handleSeek} className="cursor-pointer" />
               <div className="flex justify-between text-xs text-slate-400 mt-1">
                 <span>{formatTime(currentTime)}</span>

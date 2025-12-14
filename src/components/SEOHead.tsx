@@ -20,6 +20,15 @@ const SEOHead = ({
     // Update document title
     document.title = title;
     
+    // Get clean URL without /spa/ prefix
+    const getCleanUrl = () => {
+      if (url) return url.replace('/spa/', '/');
+      const currentUrl = window.location.href;
+      return currentUrl.replace('/spa/', '/');
+    };
+    
+    const cleanUrl = getCleanUrl();
+    
     // Update meta tags
     const updateMetaTag = (name: string, content: string, isProperty = false) => {
       const attribute = isProperty ? "property" : "name";
@@ -42,15 +51,24 @@ const SEOHead = ({
     updateMetaTag("og:description", description, true);
     updateMetaTag("og:type", type, true);
     updateMetaTag("og:image", image, true);
-    if (url) {
-      updateMetaTag("og:url", url, true);
-    }
+    updateMetaTag("og:url", cleanUrl, true);
     
     // Twitter tags
     updateMetaTag("twitter:card", "summary_large_image");
     updateMetaTag("twitter:title", title);
     updateMetaTag("twitter:description", description);
     updateMetaTag("twitter:image", image);
+    
+    // Canonical URL without /spa/
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) {
+      canonical.setAttribute("href", cleanUrl);
+    } else {
+      canonical = document.createElement("link");
+      canonical.setAttribute("rel", "canonical");
+      canonical.setAttribute("href", cleanUrl);
+      document.head.appendChild(canonical);
+    }
     
     // Theme color for browser
     updateMetaTag("theme-color", "#dc2626");
