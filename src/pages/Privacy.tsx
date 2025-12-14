@@ -3,15 +3,14 @@ import { fetchCategories, WordPressCategory } from "@/lib/wordpress";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Shield, Lock, Eye, UserCheck } from "lucide-react";
-
 const Privacy = () => {
-  const { data: categories = [] } = useQuery<WordPressCategory[]>({
+  const {
+    data: categories = []
+  } = useQuery<WordPressCategory[]>({
     queryKey: ['categories'],
     queryFn: fetchCategories
   });
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       <Header categories={categories} />
       
       <main className="container mx-auto py-12 px-4 mb-20 md:mb-0">
@@ -71,8 +70,7 @@ const Privacy = () => {
                 Vos droits
               </h2>
               <p className="text-muted-foreground">
-                Vous avez le droit d'accéder, de corriger, ou de supprimer vos données personnelles. 
-                Pour exercer ces droits, veuillez nous contacter à l'adresse: privacy@oredymedia.org
+                Vous avez le droit d'accéder, de corriger, ou de supprimer vos données personnelles. Pour exercer ces droits, veuillez nous contacter à l'adresse: privacy@panaradio.net
               </p>
             </section>
 
@@ -89,7 +87,7 @@ const Privacy = () => {
               <p className="text-muted-foreground">
                 Pour toute question concernant cette politique de confidentialité, veuillez nous contacter à:
                 <br />
-                <a href="mailto:privacy@oredymedia.org" className="text-primary hover:underline">privacy@oredymedia.org</a>
+                <a className="text-primary hover:underline" href="mailto:privacy@panaradio.net">privacy@panaradio.net</a>
               </p>
             </section>
           </div>
@@ -97,8 +95,6 @@ const Privacy = () => {
       </main>
 
       <Footer />
-    </div>
-  );
+    </div>;
 };
-
 export default Privacy;
