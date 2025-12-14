@@ -1,7 +1,12 @@
-
 [build]
   command = "npm run build"
   publish = "dist"
+
+# Remove /spa/ prefix
+[[redirects]]
+  from = "/spa/*"
+  to = "/:splat"
+  status = 301
 
 # Handle SPA routing
 [[redirects]]
@@ -9,9 +14,29 @@
   to = "/index.html"
   status = 200
 
+# PWA manifest
+[[headers]]
+  for = "/manifest.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json"
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
 # Cache control for assets
 [[headers]]
   for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache control for PWA icons
+[[headers]]
+  for = "/pana-radio-*.png"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 

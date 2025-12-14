@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Play, Search, Info, Mail, Menu, Home, Users, Calendar, Facebook, Twitter, Youtube, Settings, Shield, FileText, Phone, Tv, Podcast, MapPin, Clock, Send } from "lucide-react";
+import { Play, Search, Info, Mail, Menu, Home, Users, Calendar, Facebook, Twitter, Youtube, Settings, Shield, FileText, Phone, Tv, Podcast, MapPin, Clock, Send, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { usePWAInstall } from "@/hooks/usePWAInstall";
 interface HeaderProps {
   categories?: WordPressCategory[];
   selectedCategory?: number | null;
@@ -41,8 +42,21 @@ const Header = ({
     switchToRadio
   } = useMediaPlayer();
   const scrollDirection = useScrollDirection();
+  const { isInstallable, isInstalled, installPWA } = usePWAInstall();
+  
   const handleLiveClick = () => {
     switchToRadio();
+  };
+  
+  const handleInstallClick = async () => {
+    const success = await installPWA();
+    if (success) {
+      toast({
+        title: "Installation réussie !",
+        description: "PANA RADIO a été installée sur votre appareil.",
+      });
+    }
+    setIsCategoriesOpen(null);
   };
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -375,6 +389,20 @@ const Header = ({
                         </a>
                       </div>
                     </div>
+
+                    {/* Installation PWA */}
+                    {isInstallable && !isInstalled && (
+                      <div>
+                        <h3 className="font-bold text-lg mb-3 text-foreground">Application</h3>
+                        <button
+                          onClick={handleInstallClick}
+                          className="flex items-center gap-3 p-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-all w-full text-left"
+                        >
+                          <Download className="h-5 w-5" />
+                          <span className="font-medium">Installer PANA RADIO</span>
+                        </button>
+                      </div>
+                    )}
 
                     {/* Paramètres et légal */}
                     <div>
