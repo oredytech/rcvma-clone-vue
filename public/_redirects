@@ -1,0 +1,7 @@
+# Netlify redirects
+
+# Remove /spa/ prefix
+/spa/*  /:splat  301
+
+# SPA fallback - all routes to index.html
+/*  /index.html  200
