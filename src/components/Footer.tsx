@@ -1,8 +1,28 @@
-import { Mail, Phone, MapPin, Facebook, Twitter, Youtube } from "lucide-react";
+import { Mail, Phone, MapPin, Facebook, Twitter, Youtube, Download, Shield, FileText } from "lucide-react";
 import { Link } from "react-router-dom";
 import panaRadioLogo from "@/assets/pana-radio-logo.png";
+import { Button } from "@/components/ui/button";
+import { usePWAInstall } from "@/hooks/usePWAInstall";
+import { useToast } from "@/hooks/use-toast";
+import { useIsMobile } from "@/hooks/use-mobile";
+
 const Footer = () => {
-  return <footer className="bg-slate-900 text-slate-100 border-t border-slate-800 mt-12">
+  const { isInstallable, isInstalled, installPWA } = usePWAInstall();
+  const { toast } = useToast();
+  const isMobile = useIsMobile();
+
+  const handleInstallClick = async () => {
+    const success = await installPWA();
+    if (success) {
+      toast({
+        title: "Installation réussie !",
+        description: "PANA RADIO a été installée sur votre appareil.",
+      });
+    }
+  };
+
+  return (
+    <footer className="bg-slate-900 text-slate-100 border-t border-slate-800 mt-12">
       <div className="container mx-auto px-4 py-12 pb-24 md:pb-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* About Section */}
@@ -15,6 +35,17 @@ const Footer = () => {
               PANA RADIO est une radio panafricaine basée à Goma, en RDC, promouvant la paix, 
               l'unité africaine et la sensibilisation à l'environnement et à la santé.
             </p>
+            
+            {/* PWA Install Button for Desktop */}
+            {!isMobile && isInstallable && !isInstalled && (
+              <Button
+                onClick={handleInstallClick}
+                className="mt-4 w-full bg-primary hover:bg-primary/90"
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Installer PANA RADIO
+              </Button>
+            )}
           </div>
 
           {/* Contact Section */}
@@ -44,10 +75,10 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Social Media Section */}
+          {/* Social Media & Legal Section */}
           <div>
             <h3 className="text-lg font-bold mb-4 text-secondary">Réseaux sociaux</h3>
-            <div className="flex gap-4">
+            <div className="flex gap-4 mb-6">
               <a href="https://web.facebook.com/panaradio/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                 <Facebook className="h-5 w-5" />
               </a>
@@ -57,6 +88,19 @@ const Footer = () => {
               <a href="https://www.youtube.com/@PanaRadio-qr4dv" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                 <Youtube className="h-5 w-5" />
               </a>
+            </div>
+
+            {/* Legal Links */}
+            <h3 className="text-lg font-bold mb-3 text-secondary">Mentions légales</h3>
+            <div className="space-y-2">
+              <Link to="/confidentialite" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
+                <Shield className="h-4 w-4" />
+                Politique de confidentialité
+              </Link>
+              <Link to="/conditions" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
+                <FileText className="h-4 w-4" />
+                Conditions d'utilisation
+              </Link>
             </div>
           </div>
         </div>
@@ -72,6 +116,8 @@ const Footer = () => {
           </p>
         </div>
       </div>
-    </footer>;
+    </footer>
+  );
 };
+
 export default Footer;
