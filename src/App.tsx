@@ -19,6 +19,8 @@ import PodcastPlayer from "./pages/PodcastPlayer";
 import NotFound from "./pages/NotFound";
 import MediaPlayer from "./components/MediaPlayer";
 import CookieBanner from "./components/CookieBanner";
+import PWAInstallPrompt from "./components/PWAInstallPrompt";
+import NotificationPrompt from "./components/NotificationPrompt";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +48,8 @@ const App = () => (
         </Routes>
         <MediaPlayer />
         <CookieBanner />
+        <PWAInstallPrompt />
+        <NotificationPrompt />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
